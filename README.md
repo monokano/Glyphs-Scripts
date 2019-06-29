@@ -5,18 +5,18 @@
 ## Description
 
 ### Switch Direction
-  * Toggle the writing direction of Edit View in the panel to update the glyph information display.
+  * Toggle the writing direction of Edit View to update the info display.
 
 #### How to use
-This script displays its own panel window. Use the buttons on the panel to switch. Requires Python module.
+This script displays the panel window. Use the buttons on the panel to switch.
 
 ### Make vrt2 Glyph
   * Creates a new vrt2 (.rotat) glyph based on the selected glyphs.
-  * A .rotat glyph has its base glyph as a component.
-      * If a .rotat already exists, a base glyph is placed as a component.
-  * If a selected glyph is a .rotat, the .rotat base glyph is placed as a component.
+  * The .rotat glyph has its base glyph as a component.
+      * If the .rotat already exists, the base glyph is placed as a component.
+  * If the selected glyph is .rotat, the .rotat's base glyph is placed as a component.
   * If the base glyph does not exist, remove its .rotat.
-  * If the width of the base glyph is greater than or equal to Em, .rotat is not created. If it already exists, it will be removed.
+  * If the width of the base glyph is greater than or equal to Em, the .rotat is not created. If it already exists, it will be removed.
 #### How to use
 Select the glyph in List View before running this script. Be sure to update the feature after running. No Python module required.
 
