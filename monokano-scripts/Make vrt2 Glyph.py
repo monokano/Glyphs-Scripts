@@ -1,6 +1,6 @@
 # encoding: utf-8
 #MenuTitle: Make vrt2 Glyph
-# 007
+# 008
 # -*- coding: utf-8 -*-
 __doc__="""
 Creates a vrt2 glyph (.rotat) based on the selected glyph.
@@ -60,9 +60,9 @@ else:
 					# Get baseLayer
 					baseLayer = baseGlyph.layers[masterID]
 					
-					if (baseLayer.width >= emWidth) or (baseGlyph.name == ".notdef"):
+					if (baseLayer.width >= emWidth) or (baseName[0:1] == "."):
 						# If baseLayer width is greater than or equal to Em
-						# If baseGlyph name is .notdef
+						# If baseGlyph is dot name
 						# Remove .rotat
 						del(Font.glyphs[newName])
 					else:
@@ -75,9 +75,11 @@ else:
 							newGlyph = GSGlyph()
 							newGlyph.name = newName
 							Font.glyphs.append(newGlyph)
-				
+						
 						# Update glyph info
 						newGlyph.updateGlyphInfo(True)
+						# Label color
+						newGlyph.color = 7 # dark blue
 				
 						# Get newLayer
 						newLayer = newGlyph.layers[masterID]
@@ -86,7 +88,7 @@ else:
 						# empty
 						newLayer.components = []
 						newLayer.paths = []
-				
+						
 						# If baseGlyph is not empty, place component 
 						if baseLayer.bounds.size.width>0:
 							newComponent = GSComponent(baseName)
