@@ -15,6 +15,8 @@ This script displays its own panel window. Use the buttons on the panel to switc
   * A .rotat glyph has its base glyph as a component.
       * If a .rotat already exists, a base glyph is placed as a component.
   * If a selected glyph is a .rotat, the .rotat base glyph is placed as a component.
+  * If the base glyph does not exist, remove its .rotat.
+  * If the width of the base glyph is greater than or equal to Em, .rotat is not created. If it already exists, it will be removed.
 #### How to use
 Select the glyph in List View before running this script. Be sure to update the feature after running. No Python module required.
 
