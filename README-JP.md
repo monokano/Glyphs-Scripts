@@ -1,7 +1,7 @@
 [English](https://github.com/monokano/Glyphs-Scripts) / [日本語](README-JP.md)
 
 # Glyphs用スクリプト
-Glyphs用のスクリプトです。「monokano-scripts」の中にあります。
+Glyphs用のスクリプトです。[monokano-scripts](monokano-scripts)にあります。
 
 
 ## スクリプトのインストールと実行
