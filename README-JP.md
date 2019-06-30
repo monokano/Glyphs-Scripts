@@ -1,7 +1,6 @@
 [English](https://github.com/monokano/Glyphs-Scripts) / [日本語](README-JP.md)
 
 # Glyphs用スクリプト
-<<<<<<< HEAD
 Glyphs用のスクリプトです。
 
 ### ダウンロード方法
@@ -9,9 +8,6 @@ Glyphs用のスクリプトです。
 2. ボタンの下にビロっと表示されるので、右下の「Download Zip」を選択します。
 
 これでzipファイルがダウンロードされます。解凍した中の「monokano-scripts」フォルダにスクリプトのファイル（拡張子.pyのファイル）が入っています。
-=======
-Glyphs用のスクリプトです。[monokano-scripts](monokano-scripts)にあります。
->>>>>>> 6c658a01d497f2a82140cab43a973eebd0e0929a
 
 
 ## スクリプトのインストールと実行
