@@ -3,7 +3,7 @@
 # 004
 # -*- coding: utf-8 -*-
 __doc__="""
-Toggle the writing direction of Edit View in the panel to update the glyph information display.
+Toggle the writing direction of Edit View in the panel to update the glyph info display.
 パネルで編集ビューの組方向を切り替え、グリフ情報表示を更新する。
 """
 import vanilla

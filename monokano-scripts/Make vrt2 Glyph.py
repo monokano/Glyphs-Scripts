@@ -50,60 +50,61 @@ else:
 			
 			# At this point, newName is both .rotat
 			try:
-				# Get baseGlyph
-				baseGlyph = Font.glyphs[baseName]
-				if baseGlyph is None:
-					# If baseGlyph doesn't exist 
-					# Remove .rotat
-					del(Font.glyphs[newName])
-				else:
-					# Get baseLayer
-					baseLayer = baseGlyph.layers[masterID]
-					
-					if (baseLayer.width >= emWidth) or (baseName[0:1] == "."):
-						# If baseLayer width is greater than or equal to Em
-						# If baseGlyph is dot name
+				if baseName[0:1] != ".":
+					# baseGlyph is not dot name
+					# Get baseGlyph
+					baseGlyph = Font.glyphs[baseName]
+					if baseGlyph is None:
+						# If baseGlyph doesn't exist 
 						# Remove .rotat
 						del(Font.glyphs[newName])
 					else:
-						# Only if baseLayer width is less than Em
-						# Get newGlyph
-						newGlyph = Font.glyphs[newName]
-						
-						# If newGlyph doesn't exist, add new .rotat glyph
-						if newGlyph is None:
-							newGlyph = GSGlyph()
-							newGlyph.name = newName
-							Font.glyphs.append(newGlyph)
-						
-						# Update glyph info
-						newGlyph.updateGlyphInfo(True)
-						# Label color
-						newGlyph.color = 7 # dark blue
-				
-						# Get newLayer
-						newLayer = newGlyph.layers[masterID]
-						# Width Em
-						newLayer.width = emWidth
-						# empty
-						newLayer.components = []
-						newLayer.paths = []
-						
-						# If baseGlyph is not empty, place component 
-						if baseLayer.bounds.size.width>0:
-							newComponent = GSComponent(baseName)
-							newComponent.automaticAlignment = False
-							newComponent.transform = ((0, -1, 1, 0, transformX, transformY))
-							newLayer.components.append(newComponent)					
-			
-						# Set vertWidth
-						thisWidth = baseLayer.width
-						if appBuildNumber < 1241:
-							newLayer.setVertOrigin_(None)
-							newLayer.setVertWidth_(thisWidth)
+						# Get baseLayer
+						baseLayer = baseGlyph.layers[masterID]
+						if baseLayer.width >= emWidth:
+							# If baseLayer width is greater than or equal to Em
+							# Remove .rotat
+							del(Font.glyphs[newName])
 						else:
-							newLayer.vertOrigin = None
-							newLayer.vertWidth = thisWidth
+							# Only if baseLayer width is less than Em
+							# Get newGlyph
+							newGlyph = Font.glyphs[newName]
+						
+							# If newGlyph doesn't exist, add new .rotat glyph
+							if newGlyph is None:
+								newGlyph = GSGlyph()
+								newGlyph.name = newName
+								Font.glyphs.append(newGlyph)
+							
+							if newGlyph is not None:
+								# Update glyph info
+								newGlyph.updateGlyphInfo(True)
+								# Label color
+								newGlyph.color = 7 # dark blue
+								
+								# Get newLayer
+								newLayer = newGlyph.layers[masterID]
+								# Width Em
+								newLayer.width = emWidth
+								# empty
+								newLayer.components = []
+								newLayer.paths = []
+								
+								# If baseGlyph is not empty, add component 
+								if baseLayer.bounds.size.width>0:
+									newComponent = GSComponent(baseName)
+									newComponent.automaticAlignment = False
+									newComponent.transform = ((0, -1, 1, 0, transformX, transformY))
+									newLayer.components.append(newComponent)					
+								
+								# Set vertWidth
+								thisWidth = baseLayer.width
+								if appBuildNumber < 1241:
+									newLayer.setVertOrigin_(None)
+									newLayer.setVertWidth_(thisWidth)
+								else:
+									newLayer.vertOrigin = None
+									newLayer.vertWidth = thisWidth
 				
 			except Exception as e:
 				print traceback.format_exc()
