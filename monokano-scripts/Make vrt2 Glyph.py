@@ -1,29 +1,38 @@
 # encoding: utf-8
 #MenuTitle: Make vrt2 Glyph
-# 008
+# 009
 # -*- coding: utf-8 -*-
 __doc__="""
 Creates a vrt2 glyph (.rotat) based on the selected glyph.
 選択されたグリフを基にして vrt2グリフ（.rotat）を作成する。
 """
+from AppKit import NSAlert
 import traceback
 
 ##################################################
 ## Localize - English, Japanese
 open_file = Glyphs.localize({ 'en': u'Open a glyphs file.', 'ja': u'glyphs ファイルを開いてください。', })
 select_glyph = Glyphs.localize({ 'en': u'Please select a glyph.', 'ja': u'グリフを選択してください。', })
-update_feature = Glyphs.localize({ 'en': u'Done. Update OpenType feature.', 'ja': u'完了しました。フィーチャ－を更新してください。', })
+Done = Glyphs.localize({ 'en': u'Done.', 'ja': u'完了しました。', })
+Update_OpenType_feature = Glyphs.localize({ 'en': u'Update OpenType features.', 'ja': u'OpenType フィーチャ－を更新してください。', })
 
 ##################################################
+def showAlert(messageText, InformativeText=""):
+	alert = NSAlert.alloc().init()
+	alert.setMessageText_(messageText)
+	alert.setInformativeText_(InformativeText)
+	alert.runModal()
+	
+##################################################
 if Glyphs.font is None:
-	Glyphs.displayDialog_(open_file)
+	showAlert(open_file)
 	
 else:
 	Font = Glyphs.font	
 	
 	selectedLayers = Font.selectedLayers
 	if (selectedLayers is None) or (len(selectedLayers)==0):
-		Glyphs.displayDialog_(select_glyph)
+		showAlert(select_glyph)
 		
 	else:
 		Font.disableUpdateInterface()
@@ -48,67 +57,77 @@ else:
 			else:
 				newName = baseName + ".rotat"
 			
-			# At this point, newName is both .rotat
+			# baseName has not .rotat
+			# newName has .rotat
 			try:
-				if baseName[0:1] != ".":
-					# baseGlyph is not dot name
-					# Get baseGlyph
-					baseGlyph = Font.glyphs[baseName]
-					if baseGlyph is None:
-						# If baseGlyph doesn't exist 
-						# Remove .rotat
-						del(Font.glyphs[newName])
-					else:
-						# Get baseLayer
-						baseLayer = baseGlyph.layers[masterID]
-						if baseLayer.width >= emWidth:
-							# If baseLayer width is greater than or equal to Em
-							# Remove .rotat
-							del(Font.glyphs[newName])
-						else:
-							# Only if baseLayer width is less than Em
-							# Get newGlyph
-							newGlyph = Font.glyphs[newName]
-						
-							# If newGlyph doesn't exist, add new .rotat glyph
-							if newGlyph is None:
-								newGlyph = GSGlyph()
-								newGlyph.name = newName
-								Font.glyphs.append(newGlyph)
-							
-							if newGlyph is not None:
-								# Update glyph info
-								newGlyph.updateGlyphInfo(True)
-								# Label color
-								newGlyph.color = 7 # dark blue
-								
-								# Get newLayer
-								newLayer = newGlyph.layers[masterID]
-								# Width Em
-								newLayer.width = emWidth
-								# empty
-								newLayer.components = []
-								newLayer.paths = []
-								
-								# If baseGlyph is not empty, add component 
-								if baseLayer.bounds.size.width>0:
-									newComponent = GSComponent(baseName)
-									newComponent.automaticAlignment = False
-									newComponent.transform = ((0, -1, 1, 0, transformX, transformY))
-									newLayer.components.append(newComponent)					
-								
-								# Set vertWidth
-								thisWidth = baseLayer.width
-								if appBuildNumber < 1241:
-									newLayer.setVertOrigin_(None)
-									newLayer.setVertWidth_(thisWidth)
-								else:
-									newLayer.vertOrigin = None
-									newLayer.vertWidth = thisWidth
+				if baseName[0:1] == ".":
+					# baseGlyph is dot name
+					continue
 				
+				# Get baseGlyph
+				baseGlyph = Font.glyphs[baseName]
+				
+				if baseGlyph is None:
+					# baseGlyph doesn't exist 
+					# Remove .rotat glyph
+					del(Font.glyphs[newName])
+					continue
+				
+				# Get baseLayer
+				baseLayer = baseGlyph.layers[masterID]
+				
+				if baseLayer.width >= emWidth:
+					# baseLayer width is greater than or equal to Em
+					# Remove .rotat glyph
+					del(Font.glyphs[newName])
+					continue
+				
+				# baseLayer width is less than Em
+				# Get newGlyph
+				newGlyph = Font.glyphs[newName]
+			
+				# newGlyph doesn't exist. Add new .rotat glyph
+				if newGlyph is None:
+					newGlyph = GSGlyph()
+					newGlyph.name = newName
+					Font.glyphs.append(newGlyph)
+				
+				# Remove unicode
+				newGlyph.unicodes = []
+				# Update glyph info
+				newGlyph.updateGlyphInfo(True)
+				# Label color
+				newGlyph.color = 7 # dark blue
+				
+				# Get newLayer
+				newLayer = newGlyph.layers[masterID]
+				
+				# Width Em
+				newLayer.width = emWidth
+				# empty
+				newLayer.paths = []
+				newLayer.components = []
+				newLayer.anchors = []
+				
+				# If baseGlyph is not empty, add component 
+				if baseLayer.bounds.size.width>0:
+					newComponent = GSComponent(baseName)
+					newComponent.automaticAlignment = False
+					newComponent.transform = ((0, -1, 1, 0, transformX, transformY))
+					newLayer.components.append(newComponent)					
+				
+				# Set vertWidth
+				thisWidth = baseLayer.width
+				if appBuildNumber < 1241:
+					newLayer.setVertOrigin_(None)
+					newLayer.setVertWidth_(thisWidth)
+				else:
+					newLayer.vertOrigin = None
+					newLayer.vertWidth = thisWidth
+			
 			except Exception as e:
+				Font.enableUpdateInterface()
 				print traceback.format_exc()
 		
 		Font.enableUpdateInterface()
-		Glyphs.displayDialog_(update_feature)
-
+		showAlert(Done, Update_OpenType_feature)

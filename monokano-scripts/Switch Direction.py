@@ -1,6 +1,6 @@
 # encoding: utf-8
 #MenuTitle: Switch Direction
-# 004
+# 005
 # -*- coding: utf-8 -*-
 __doc__="""
 Toggle the writing direction of Edit View in the panel to update the glyph info display.
@@ -13,13 +13,20 @@ import vanilla
 Direction = Glyphs.localize({ 'en': u'Direction', 'ja': u'組方向', })
 H = Glyphs.localize({ 'en': u'H', 'ja': u'ヨコ', })
 V = Glyphs.localize({ 'en': u'V', 'ja': u'タテ', })
+lang = Glyphs.localize({ 'en': u'en', 'ja': u'ja', })
 
 ##################################################
 ## Class - Mainwindow
 class MainWindow(object):
 	def __init__(self):
+		
+		if lang=="ja":
+			posX= 10
+		else:
+			posX= 21
+		
 		self.w = vanilla.FloatingWindow((120, 28), Direction, autosaveName="com.tama-san.SwitchDirection.mainwindow")
-		self.w.radioGroup1 = vanilla.RadioGroup((10, 0, 100, 28), [H, V], isVertical=False, callback=self.switchAction)
+		self.w.radioGroup1 = vanilla.RadioGroup((posX, 0, -10, 28), [H, V], isVertical=False, callback=self.switchAction)
 		self.setButtonSelecion()
 		self.w.open()
 	
@@ -31,7 +38,7 @@ class MainWindow(object):
 			else:
 				Font.currentTab.direction = RTLTTB
 			Font.currentTab.textCursor = Font.currentTab.textCursor
-
+	
 	def setButtonSelecion(self):
 		self.w.radioGroup1.set(0)
 		if (Glyphs.font is not None) and (Glyphs.font.currentTab is not None):
