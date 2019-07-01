@@ -4,11 +4,25 @@
 
 ## Description
 
+### Make Rect Path
+  * Adds a rectangular path to the glyph.
+  * The settings are as follows:.
+      * Target Glyph: Selection/All.
+      * Rectangle type: White (enclosed rule)/Black (Fill).
+         * You can set the line width.
+      * Rectangular Size: Body/Bounds (Path Area).
+         * You can set the offset value.
+      * Whether to empty the glyph before adding a rectangular path.
+
+#### How to use
+This script has the panel window. Configure the settings on the window and press the Run button. Requires Python module.
+
+
 ### Switch Direction
   * Toggle the writing direction of Edit View to update the info display.
 
 #### How to use
-This script has the panel window. Push the buttons on the panel to switch.
+This script has the panel window. Push the buttons on the panel to switch. Requires Python module.
 
 ### Make vrt2 Glyph
   * Creates a new vrt2 (.rotat) glyph based on the selected glyphs.
