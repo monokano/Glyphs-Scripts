@@ -6,13 +6,13 @@
 
 ### Make Rect Path
   * Adds a rectangular path to the glyph.
-  * The settings are as follows:.
-      * Target Glyph: Selection/All.
-      * Rectangle type: White (enclosed rule)/Black (Fill).
+  * Settings:
+      * Target Glyph: Selection/All
+      * Rectangle type: White (Line box)/Black (Fill)
          * You can set the line width.
       * Rectangular Size: Body/Bounds (Path Area).
          * You can set the offset value.
-      * Whether to empty the glyph before adding a rectangular path.
+      * Lets you set whether to empty the glyph before adding a rectangular path.
 
 #### How to use
 This script has the panel window. Configure the settings on the window and press the Run button. Requires Python module.
