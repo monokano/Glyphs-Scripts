@@ -1,6 +1,6 @@
 # encoding: utf-8
 #MenuTitle: Make Rect Path
-# 003
+# 004
 # -*- coding: utf-8 -*-
 __doc__="""
 Create a rectangular path.
@@ -15,11 +15,11 @@ Target_Glyph = Glyphs.localize({ 'en': u'Target Glyph:', 'ja': u'対象:', })
 Selection = Glyphs.localize({ 'en': u'Selection', 'ja': u'選択グリフ', })
 All = Glyphs.localize({ 'en': u'All', 'ja': u'全グリフ', })
 Rectangle_Type = Glyphs.localize({ 'en': u'Rectangle Type:', 'ja': u'矩形タイプ:', })
-White = Glyphs.localize({ 'en': u'White', 'ja': u'白', })
-Black = Glyphs.localize({ 'en': u'Black', 'ja': u'黒', })
+White = Glyphs.localize({ 'en': u'White', 'ja': u'ホワイト', })
+Black = Glyphs.localize({ 'en': u'Black', 'ja': u'ブラック', })
 Line_Width = Glyphs.localize({ 'en': u'Line Width:', 'ja': u'線幅:', })
 Rectangle_Size = Glyphs.localize({ 'en': u'Rectangle Size:', 'ja': u'矩形サイズ:', })
-Body = Glyphs.localize({ 'en': u'Body', 'ja': u'ボディ', })
+Body = Glyphs.localize({ 'en': u'Body', 'ja': u'ボディ枠', })
 Bounds = Glyphs.localize({ 'en': u'Bounds', 'ja': u'パス領域', })
 Offset_Value = Glyphs.localize({ 'en': u'Offset Value:', 'ja': u'ずらし量:', })
 Empty_the_glyph = Glyphs.localize({ 'en': u'Empty the glyph before adding a path.', 'ja': u'矩形パスを追加する前にグリフを空にする', })
