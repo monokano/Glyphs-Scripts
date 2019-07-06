@@ -1,12 +1,16 @@
 # encoding: utf-8
 #MenuTitle: Make Rect Path
-# 004
+# 005
 # -*- coding: utf-8 -*-
 __doc__="""
 Create a rectangular path.
 矩形パスを作成する。
 """
 import vanilla, traceback
+
+##################################################
+## Global
+appBuildNumber = Glyphs.buildNumber
 
 ##################################################
 ## Localize - English, Japanese
@@ -22,7 +26,9 @@ Rectangle_Size = Glyphs.localize({ 'en': u'Rectangle Size:', 'ja': u'矩形サ�
 Body = Glyphs.localize({ 'en': u'Body', 'ja': u'ボディ枠', })
 Bounds = Glyphs.localize({ 'en': u'Bounds', 'ja': u'パス領域', })
 Offset_Value = Glyphs.localize({ 'en': u'Offset Value:', 'ja': u'ずらし量:', })
-Empty_the_glyph = Glyphs.localize({ 'en': u'Empty the glyph before adding a path.', 'ja': u'矩形パスを追加する前にグリフを空にする', })
+Reflect_MetricV = Glyphs.localize({ 'en': u'Reflect vertWidth/vertOrigin', 'ja': u'vertWidth/vertOrigin を反映', })
+Empty_the_glyph = Glyphs.localize({ 'en': u'Empty the glyph before adding.', 'ja': u'矩形パス追加前にグリフを空にする', })
+Correct_path_direction = Glyphs.localize({ 'en': u'Correct path direction after adding.', 'ja': u'矩形パス追加後にパス方向を修正する', })
 Run = Glyphs.localize({ 'en': u'Run', 'ja': u'実行', })
 Target_glyph_does_not_exist = Glyphs.localize({ 'en': u'Target glyph does not exist.', 'ja': u'対象グリフがありません。', })
 Done = Glyphs.localize({ 'en': u'Done.', 'ja': u'完了しました。', })
@@ -45,7 +51,7 @@ class ArrowEditText(vanilla.EditText):
 ## Class - Mainwindow
 class MainWindow(object):
 	def __init__(self):
-		self.w = vanilla.FloatingWindow((310, 240), Make_Rect_Path, autosaveName="com.tama-san.MakeRectPath.mainwindow")
+		self.w = vanilla.FloatingWindow((310, 264+28), Make_Rect_Path, autosaveName="com.tama-san.MakeRectPath.mainwindow")
 		self.w.bind("should close", self.savePreferences)
 
 		self.w.label1 = vanilla.TextBox((0, 18, 122, 20), Target_Glyph, alignment="right")
@@ -59,12 +65,14 @@ class MainWindow(object):
 		self.w.fieldLineWidth = ArrowEditText((125, 70, 50, 22), "10", continuous=True, callback=self.changeLineWidthAction)
 
 		self.w.label4 = vanilla.TextBox((0, 102, 122, 20), Rectangle_Size, alignment="right")
-		self.w.radioSize = vanilla.RadioGroup((125, 102, -10, 20), [Body, Bounds], isVertical=False)
+		self.w.radioSize = vanilla.RadioGroup((125, 102, -10, 20), [Body, Bounds], isVertical=False, callback=self.changeSizeAction)
 		self.w.radioSize.set(0)
 		self.w.label5 = vanilla.TextBox((0, 130, 122, 22), Offset_Value, alignment="right", sizeStyle='small')
 		self.w.fieldOffset = ArrowEditText((125, 125, 50, 22), "0", continuous=True)
+		self.w.checkMetricV = vanilla.CheckBox((125, 150, -0, 22), Reflect_MetricV, sizeStyle='small')
 
-		self.w.checkEmpty = vanilla.CheckBox((20, 165, -0, 20), Empty_the_glyph, value=True)
+		self.w.checkEmpty = vanilla.CheckBox((20, 186, -0, 20), Empty_the_glyph)
+		self.w.checkCorrect = vanilla.CheckBox((20, 186+28, -0, 20), Correct_path_direction)
 
 		self.w.button1 = vanilla.Button((-95, -40, 80, 20), Run, callback=self.runButtonAction)
 
@@ -87,6 +95,8 @@ class MainWindow(object):
 			Glyphs.defaults["com.tama-san.MakeRectPath.Size"] = int(self.w.radioSize.get())
 			Glyphs.defaults["com.tama-san.MakeRectPath.Offset"] = resolveIntText(self.w.fieldOffset.get())
 			Glyphs.defaults["com.tama-san.MakeRectPath.isEmpty"] = int(self.w.checkEmpty.get())
+			Glyphs.defaults["com.tama-san.MakeRectPath.MetricV"] = int(self.w.checkMetricV.get())
+			Glyphs.defaults["com.tama-san.MakeRectPath.Correct"] = int(self.w.checkCorrect.get())
 			return True
 		except Exception as e:
 			print traceback.format_exc()
@@ -94,13 +104,19 @@ class MainWindow(object):
 
 	def readPreferences(self):
 		try:
-			if Glyphs.defaults["com.tama-san.MakeRectPath.isEmpty"] is not None: 
+			if Glyphs.defaults["com.tama-san.MakeRectPath.Correct"] is not None: 
 				self.w.radioTarget.set(Glyphs.defaults["com.tama-san.MakeRectPath.Target"])
 				self.w.radioType.set(Glyphs.defaults["com.tama-san.MakeRectPath.Type"])
 				self.w.fieldLineWidth.set(Glyphs.defaults["com.tama-san.MakeRectPath.LineWidth"])
 				self.w.radioSize.set(Glyphs.defaults["com.tama-san.MakeRectPath.Size"])
 				self.w.fieldOffset.set(Glyphs.defaults["com.tama-san.MakeRectPath.Offset"])
 				self.w.checkEmpty.set(Glyphs.defaults["com.tama-san.MakeRectPath.isEmpty"])
+				self.w.checkMetricV.set(Glyphs.defaults["com.tama-san.MakeRectPath.MetricV"])
+				self.w.checkCorrect.set(Glyphs.defaults["com.tama-san.MakeRectPath.Correct"])
+				####
+				self.SetEnabledByType(self.w.radioType.get())
+				self.SetEnabledBySize(self.w.radioSize.get())
+				
 		except Exception as e:
 			print traceback.format_exc()
 			return
@@ -109,15 +125,11 @@ class MainWindow(object):
 	## control actions
 	
 	def changeTypeAction(self, sender):
-		if sender.get()<=0:
-			self.w.label3.getNSTextField().setTextColor_(NSColor.textColor())
-			self.w.fieldLineWidth.enable(True)
-			self.w.button1.enable( (resolveInt(self.w.fieldLineWidth.get())>0) )
-		else:
-			self.w.label3.getNSTextField().setTextColor_(NSColor.headerColor())
-			self.w.fieldLineWidth.enable(False)
-			self.w.button1.enable(True)
+		self.SetEnabledByType(sender.get())
 		
+	def changeSizeAction(self, sender):
+		self.SetEnabledBySize(sender.get())
+
 	def changeLineWidthAction(self, sender):
 		self.w.button1.enable( (resolveInt(sender.get())>0) )
 
@@ -130,12 +142,26 @@ class MainWindow(object):
 			size = self.w.radioSize.get()
 			OffsetValue = resolveInt(self.w.fieldOffset.get())
 			isEmpty = self.w.checkEmpty.get()
+			isMetricV = self.w.checkMetricV.get()
+			isCorrect = self.w.checkCorrect.get()
 			###
-			makeRectPath(Font, target, type, lineWidth, size, OffsetValue, isEmpty) 
+			makeRectPath(Font, target, type, lineWidth, size, OffsetValue, isEmpty, isMetricV, isCorrect) 
 
+	def SetEnabledByType(self, value):
+		if value==0:
+			self.w.label3.getNSTextField().setTextColor_(NSColor.textColor())
+			self.w.fieldLineWidth.enable(True)
+			self.w.button1.enable( (resolveInt(self.w.fieldLineWidth.get())>0) )
+		else:
+			self.w.label3.getNSTextField().setTextColor_(NSColor.headerColor())
+			self.w.fieldLineWidth.enable(False)
+			self.w.button1.enable(True)
+
+	def SetEnabledBySize(self, value):
+		self.w.checkMetricV.enable(value==0)
 		
 ##################################################
-def makeRectPath(Font, target, type, lineWidth, size, OffsetValue, isEmpty):
+def makeRectPath(Font, target, type, lineWidth, size, OffsetValue, isEmpty, isMetricV, isCorrect):
 	
 	masterID = Font.selectedFontMaster.id
 	
@@ -156,12 +182,15 @@ def makeRectPath(Font, target, type, lineWidth, size, OffsetValue, isEmpty):
 		Font.disableUpdateInterface()
 		
 		for thisLayer in targetLayers:
-			
 			if size==0:
 				thisLeftX = 0.0
 				thisTopY = Font.selectedFontMaster.ascender
 				thisBottomY = Font.selectedFontMaster.descender
 				thisRightX = thisLayer.width
+				if isMetricV:
+					thisVertOrigin = getVertOrigin(thisLayer)
+					thisTopY = thisTopY - thisVertOrigin
+					thisBottomY = getBottomY(Font, thisLayer) - thisVertOrigin
 			else:
 				thisLeftX = thisLayer.bounds.origin.x
 				thisTopY = thisLayer.bounds.origin.y + thisLayer.bounds.size.height
@@ -175,7 +204,9 @@ def makeRectPath(Font, target, type, lineWidth, size, OffsetValue, isEmpty):
 				else:
 					# Black
 					makeBlackRect(Font, thisLayer, OffsetValue, isEmpty, thisLeftX, thisTopY, thisBottomY, thisRightX)
-				thisLayer.correctPathDirection()
+				
+				if isCorrect:
+					thisLayer.correctPathDirection()
 	
 		# end
 		Font.enableUpdateInterface()
@@ -258,6 +289,8 @@ def makeWhiteRect(Font, thisLayer, OffsetValue, isEmpty, thisLeftX, thisTopY, th
 	tmpPath2.nodes = [ node0, node1, node2, node3 ]
 	tmpPath2.closed = True
 	
+	tmpPath2.reverse()
+	
 	if isEmpty:
 		thisLayer.paths = []
 		thisLayer.components = []
@@ -312,6 +345,34 @@ def makeBlackRect(Font, thisLayer, OffsetValue, isEmpty, thisLeftX, thisTopY, th
 
 	thisLayer.paths.append( tmpPath )
 
+
+def getVertOrigin(thisLayer):
+	if appBuildNumber < 1241:
+		thisVertOrigin = thisLayer.vertOrigin()
+		if thisVertOrigin > 100000:
+			return 0
+		else:
+			return thisVertOrigin
+	else:
+		thisVertOrigin = thisLayer.vertOrigin
+		if thisVertOrigin is None:
+			return 0
+		else:
+			return thisVertOrigin
+
+def getBottomY(Font, thisLayer):
+	if appBuildNumber < 1241:
+		thisHeight = thisLayer.vertWidth()
+		if thisHeight == -1.0:
+			return Font.selectedFontMaster.descender
+		else:
+			return -(thisHeight - Font.selectedFontMaster.ascender)
+	else:
+		thisHeight =  thisLayer.vertWidth
+		if thisHeight is None:
+			return Font.selectedFontMaster.descender
+		else:
+			return -(thisHeight - Font.selectedFontMaster.ascender)
 
 def resolveInt(value):
 	try:
