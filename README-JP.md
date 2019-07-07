@@ -1,5 +1,7 @@
 [English](https://github.com/monokano/Glyphs-Scripts) / [日本語](README-JP.md)
 
+[変更点](/Changes.md)
+
 # Glyphs用スクリプト
 
 ### ダウンロード方法
