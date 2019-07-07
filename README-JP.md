@@ -1,6 +1,6 @@
 [English](https://github.com/monokano/Glyphs-Scripts) / [日本語](README-JP.md)
 
-[変更点](Changes.md)
+[変更点](Changes-JP.md)
 
 # Glyphs用スクリプト
 
