@@ -1,6 +1,6 @@
 # encoding: utf-8
 #MenuTitle: Make vrt2 Glyph
-# 009
+# 010
 # -*- coding: utf-8 -*-
 __doc__="""
 Creates a vrt2 glyph (.rotat) based on the selected glyph.
@@ -119,7 +119,7 @@ else:
 				# Set vertWidth
 				thisWidth = baseLayer.width
 				if appBuildNumber < 1241:
-					newLayer.setVertOrigin_(None)
+					newLayer.setVertOrigin_(9.22337203685e+18)
 					newLayer.setVertWidth_(thisWidth)
 				else:
 					newLayer.vertOrigin = None
