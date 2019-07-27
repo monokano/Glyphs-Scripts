@@ -35,6 +35,13 @@ This script has the panel window. Push the buttons on the panel to switch. Requi
 #### How to use
 Select the glyphs in List View before running this script. Be sure to update the feature after running. No Python module required.
 
+### Set vrt2 VertWidth
+  * Set the vertWidth of the vrt2 glyph (.rotat) to be the same as the Width of the component.
+  * The .rotat glyph must have one component.
+      * Do nothing if there are no component or if there are multiple components.
+#### How to use
+Execute in the Script menu. All .rotat glyphs are affected. No Python module required.
+
 ## License
 
 Licensed under [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
