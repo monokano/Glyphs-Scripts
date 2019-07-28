@@ -1,6 +1,6 @@
 # encoding: utf-8
-#MenuTitle: Set vrt2 VertWidth
-# 001
+#MenuTitle: Set vertWidth for vrt2 Glyph
+# 002
 # -*- coding: utf-8 -*-
 __doc__="""
 Set the vertWidth of the vrt2 glyph (.rotat) to be the same as the Width of the component.
@@ -30,6 +30,8 @@ else:
 	
 	Font.disableUpdateInterface()
 	
+	transformX = -(Font.selectedFontMaster.descender)
+	transformY = Font.selectedFontMaster.ascender
 	masterID = Font.selectedFontMaster.id
 	appBuildNumber = Glyphs.buildNumber
 	
@@ -44,6 +46,9 @@ else:
 			# Determine if thisLayer has one component
 			if len(thisLayer.components) == 1:
 				aComponent = thisLayer.components[0]
+				
+				# Set position
+				aComponent.transform = ((0, -1, 1, 0, transformX, transformY))
 
 				# Get Glyph
 				componentGlyph = Font.glyphs[aComponent.componentName]
@@ -51,7 +56,7 @@ else:
 				# Set vertWidth
 				thisWidth = componentGlyph.layers[masterID].width
 				if appBuildNumber < 1241:
-					thisLayer.setVertOrigin_(9.22337203685e+18)
+					thisLayer.setVertOrigin_(9223372036854775807)
 					thisLayer.setVertWidth_(thisWidth)
 				else:
 					thisLayer.vertOrigin = None

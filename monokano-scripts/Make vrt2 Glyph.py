@@ -97,7 +97,7 @@ else:
 				# Update glyph info
 				newGlyph.updateGlyphInfo(True)
 				# Label color
-				newGlyph.color = 7 # dark blue
+				newGlyph.color = 3 # yellow
 				
 				# Get newLayer
 				newLayer = newGlyph.layers[masterID]
@@ -119,7 +119,7 @@ else:
 				# Set vertWidth
 				thisWidth = baseLayer.width
 				if appBuildNumber < 1241:
-					newLayer.setVertOrigin_(9.22337203685e+18)
+					newLayer.setVertOrigin_(9223372036854775807)
 					newLayer.setVertWidth_(thisWidth)
 				else:
 					newLayer.vertOrigin = None

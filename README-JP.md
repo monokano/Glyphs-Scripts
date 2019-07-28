@@ -74,8 +74,9 @@
     * **Adobe-Japan1 の場合**
       * GlyphsのAJ1用のnice nameは、ベースグリフと.rotatグリフの名前の対応に不具合があります。ですから、このスクリプトではうまくいきません。使ってはいけません。
 
-* ### Set vrt2 VertWidth（vrt2専用グリフのvertWidthを設定）
+* ### Set vertWidth for vrt2 Glyph（vrt2専用グリフのvertWidthを設定）
   * vrt2専用（.rotat）グリフのvertWidthをコンポーネントのwidthに合わせます。
+      * コンポーネントの位置がズレていても正常な位置にします。
   * .rotatグリフにコンポーネントが配置済みであることが前提です。
       * コンポーネントがない、またはコンポーネントが複数ある場合はなにもしません。
   * **使い方**
