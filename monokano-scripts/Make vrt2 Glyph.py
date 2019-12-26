@@ -1,6 +1,6 @@
 # encoding: utf-8
 #MenuTitle: Make vrt2 Glyph
-# 010
+# 012
 # -*- coding: utf-8 -*-
 __doc__="""
 Creates a vrt2 glyph (.rotat) based on the selected glyph.
@@ -76,13 +76,6 @@ else:
 				# Get baseLayer
 				baseLayer = baseGlyph.layers[masterID]
 				
-				if baseLayer.width >= emWidth:
-					# baseLayer width is greater than or equal to Em
-					# Remove .rotat glyph
-					del(Font.glyphs[newName])
-					continue
-				
-				# baseLayer width is less than Em
 				# Get newGlyph
 				newGlyph = Font.glyphs[newName]
 			
