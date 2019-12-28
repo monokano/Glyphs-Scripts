@@ -1,6 +1,6 @@
 # encoding: utf-8
 #MenuTitle: Set vertWidth for vrt2 Glyph
-# 002
+# 003
 # -*- coding: utf-8 -*-
 __doc__="""
 Set the vertWidth of the vrt2 glyph (.rotat) to be the same as the Width of the component.
@@ -63,4 +63,4 @@ else:
 					thisLayer.vertWidth = thisWidth
 	
 	Font.enableUpdateInterface()
-	showAlert(Done, Update_OpenType_feature)
+	showAlert(Done)
