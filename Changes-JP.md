@@ -1,5 +1,8 @@
 ## 変更点
 
+#### 2020.1.1
+* 「Proportional Metrics.py」を追加した。
+
 ### 2019.12.28
 * 「Fix vrt2 Feature.py」を追加した。
 
