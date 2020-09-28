@@ -2,7 +2,6 @@
 
 # Scripts for Glyphs
 
-* **Proportional Metrics**: Set and edit proportional metrics and VORG.
 * **Make vrt2 Glyph**: Creates a new vrt2 (.rotat) glyph based on the selected glyphs.
 * **Fix vrt2 Feature**: Add the entire vert feature code to the vrt2 feature.
 * **Set vertWidth for vrt2 Glyph**: Set the vertWidth of the vrt2 glyph (.rotat) to be the same as the Width of the component.
