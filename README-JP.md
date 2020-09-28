@@ -6,7 +6,7 @@
 # Glyphs用スクリプト
 
 ### ダウンロード方法
-1. [Glyphs-Scripts](https://github.com/monokano/Glyphs-Scripts) の右上にある緑色のボタン「Clone or download」をクリックします。
+1. [Glyphs-Scripts](https://github.com/monokano/Glyphs-Scripts) の右上にある緑色のボタン「Clone」をクリックします。
 2. ボタンの下にビロっと表示されるので、右下の「**Download Zip**」を選択します。
 
 これでzipファイルがダウンロードされます。解凍した中の「**monokano-scripts**」フォルダにスクリプトのファイル（拡張子.pyのファイル）が入っています。
@@ -40,12 +40,6 @@
 
 ## スクリプトの説明
 
-* ### Proportional Metrics（プロポーショナルメトリクスとVORGの設定編集）
-  * **要Pythonモジュール。**
-  * 選択グリフにプロポーショナルメトリクス用アンカーを設置したり、VORGの設定をしたりします。
-  * **使い方**
-  	* [プロポーショナルメトリクスとVORGの設定編集をするGlyphs用スクリプト](https://tama-san.com/glyphs-script-palt-vpal-vorg/) 
-
 * ### Make vrt2 Glyph（vrt2専用グリフ作成）
   * Pythonモジュール不要。
   * 選択グリフをベースグリフにして、vrt2専用（.rotat）グリフを作成します。
@@ -59,6 +53,7 @@
       * GlyphsのAJ1用のnice nameは、ベースグリフと.rotatグリフの名前の対応に不具合があります。このスクリプトではうまくいかないので使ってはいけません。
 
 * ### Fix vrt2 Feature（vrt2フィーチャーを修正）
+  * 注：Glyphs v2.6.4以降は不要です。
   * Pythonモジュール不要。
   * vrt2フィーチャーにvertフィーチャーのコードを丸ごと追加します。
   * vrt2の［OpenTypeフィーチャーを自動生成］がONの時だけ実行します。
