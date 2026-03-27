@@ -2,9 +2,10 @@
 
 # -*- coding: utf-8 -*-
 __doc__="""
-Adobe-Japan1のフォントファイルを選択して、ROSのSupplementを指定した値に変更します。すでに指定した値だったらスキップします。PythonモジュールのFontToolsのインストールが必要です。
+Adobe-Japan1のフォントファイルのROSのSupplementを指定した値に変更します。
+PythonモジュールのFontToolsのインストールが必要です。
 """
-# 要FontToolsのインストール
+
 
 import os
 from fontTools.ttLib import TTFont

@@ -2,7 +2,8 @@
 
 # -*- coding: utf-8 -*-
 __doc__="""
-矩形パスを追加します。PythonモジュールのVanillaのインストールが必要です。
+グリフに矩形パスを追加します。
+PythonモジュールのVanillaのインストールが必要です。
 """
 
 import vanilla

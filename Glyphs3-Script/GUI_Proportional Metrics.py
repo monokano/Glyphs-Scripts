@@ -2,7 +2,8 @@
 
 # -*- coding: utf-8 -*-
 __doc__="""
-選択グリフのプロポーショナルメトリクスとVORGを設定します。PythonモジュールのVanillaのインストールが必要です。
+選択グリフにプロポーショナルメトリクスとVORGを設定します。
+PythonモジュールのVanillaのインストールが必要です。
 """
 
 import vanilla
