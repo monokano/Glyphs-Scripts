@@ -45,8 +45,6 @@ else:
 
     if "fvar" in font:
         Message("", "❌\n\nバリアブルフォントには\n対応していません。\n\n" + os.path.basename(font_path), OKButton="終了")
-    elif "vmtx" not in font:
-        Message("", "❌\n\nこのフォントはvmtxがないので\n対象外です。\n\n" + os.path.basename(font_path), OKButton="終了")
     else:
         y_max = font["head"].yMax
         y_min = font["head"].yMin
