@@ -1,3 +1,4 @@
+
 # Glyphsスクリプト
 
 * Glyphs 3用のPythonスクリプト
@@ -20,6 +21,7 @@
 * **AJ1のSupplementを変更**：Adobe-Japan1フォントファイルのROSのSupplementを指定値に変更。要Pythonモジュール：FontTools
 * **BASEテーブルを追加（CJK）**：CJKフォントファイルにBASEテーブルを追加。要Pythonモジュール：FontTools
 * **BASEテーブルを追加（非CJK）**：非CJKフォントファイルにBASEテーブルを追加。要Pythonモジュール：FontTools
+* **WinAscent/WinDescentをFontBBoxから設定**：OS/2.WinAscentをhead.FontBBox.yMaxに、OS/2.WinDescentをhead.FontBBox.yMinの絶対値に設定します。要Pythonモジュール：FontTools
 
 #### Glyphsファイル
 * **VORGを設定**：縦組時に字形がボディの天地中央に位置するようVORGを設定。全角英数字・記号向け
@@ -32,6 +34,10 @@
 
 ## 更新履歴
 
+* **2026.4.1**
+	* 「WinAscent/WinDescentをFontBBoxから設定」を追加
+	* 「BASEテーブルを追加（CJK）」を修正
+	* 「矩形パスを追加」のファイル名を変更
 * **2026.3.27**
 	* 「BASEテーブルを追加（CJK）」「BASEテーブルを追加（非CJK）」を追加
 	* 「AJ1（jp04）のUnicodeを設定」をブラッシュアップ

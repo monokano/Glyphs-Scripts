@@ -37,6 +37,30 @@ def select_font_file():
     return None
 
 
+def ask_em_size(default):
+    """仮想ボディ横幅入力ダイアログ。キャンセル時は None を返す"""
+    alert = NSAlert.alloc().init()
+    alert.setMessageText_("仮想ボディの横幅を入力")
+    alert.setInformativeText_("仮想ボディの横幅（unit）を\n入力してください。")
+    alert.addButtonWithTitle_("OK")
+    alert.addButtonWithTitle_("キャンセル")
+
+    field = NSTextField.alloc().initWithFrame_(NSMakeRect(0, 0, 200, 24))
+    field.setStringValue_(str(default))
+    alert.setAccessoryView_(field)
+    alert.window().setInitialFirstResponder_(field)
+
+    response = alert.runModal()
+    if response == 1000:
+        try:
+            value = int(field.stringValue())
+            if value > 0:
+                return value
+        except ValueError:
+            pass
+    return None
+
+
 def ask_icf_size(default=880):
     """字面サイズ入力ダイアログ。キャンセル時は None を返す"""
     alert = NSAlert.alloc().init()
@@ -61,26 +85,29 @@ def ask_icf_size(default=880):
     return None
 
 
-def derive_coords(font, icf_size):
+def derive_coords(font, icf_size, em_size):
     upm            = font["head"].unitsPerEm
-    typo_descender = font["OS/2"].sTypoDescender  # 負値
+    typo_descender = font["OS/2"].sTypoDescender  # negative value
 
-    half_icf = icf_size / 2
-    center_h = typo_descender + upm / 2   # em中心（HorizAxis）
-    center_v = upm / 2                    # em中心（VertAxis）
+    margin = (em_size - icf_size) / 2      # 左右の余白（天地にも共通適用）
+
+    icf_size_h = upm - margin * 2          # HorizAxis での ICF 高さ（天地方向）
+
+    center_h = typo_descender + upm / 2    # em center (HorizAxis)
+    center_v = em_size / 2                 # em center (VertAxis)
 
     horiz_coords = {
-        "icfb": round(center_h - half_icf),
-        "icft": round(center_h + half_icf),
+        "icfb": round(center_h - icf_size_h / 2),
+        "icft": round(center_h + icf_size_h / 2),
         "ideo": typo_descender,
         "idtp": typo_descender + upm,
         "romn": 0,
     }
     vert_coords = {
-        "icfb": round(center_v - half_icf),
-        "icft": round(center_v + half_icf),
+        "icfb": round(center_v - icf_size / 2),
+        "icft": round(center_v + icf_size / 2),
         "ideo": 0,
-        "idtp": upm,
+        "idtp": em_size,
         "romn": -typo_descender,
     }
     return horiz_coords, vert_coords
@@ -165,31 +192,35 @@ def add_base_table(font, horiz_coords, vert_coords):
 
 font_path = select_font_file()
 if not font_path:
-    Message("", "ファイルが選択されませんでした", OKButton="OK")
+    Message("", "ファイルが選択されませんでした", OKButton="終了")
 else:
     font      = TTFont(font_path)
 
     if "fvar" in font:
-        Message("", "❌\n\nバリアブルフォントには\n対応していません。\n\n" + os.path.basename(font_path), OKButton="OK")
+        Message("", "❌\n\nバリアブルフォントには\n対応していません。\n\n" + os.path.basename(font_path), OKButton="終了")
     elif "vmtx" not in font:
-        Message("", "❌\n\nこのフォントはvmtxがないので\nCJKフォントではありません。\n\n" + os.path.basename(font_path), OKButton="OK")
+        Message("", "❌\n\nこのフォントはvmtxがないので\nCJKフォントではありません。\n\n" + os.path.basename(font_path), OKButton="終了")
     else:
         upm       = font["head"].unitsPerEm
         typo_desc = font["OS/2"].sTypoDescender
 
-        icf_size = ask_icf_size(default=round(upm * 0.92))
-        if icf_size is None:
-            Message("", "キャンセルされました", OKButton="OK")
+        em_size = ask_em_size(default=upm)
+        if em_size is None:
+            Message("", "キャンセルされました", OKButton="終了")
         else:
-            horiz_coords, vert_coords = derive_coords(font, icf_size)
+            icf_size = ask_icf_size(default=round(em_size * 0.92))
+            if icf_size is None:
+                Message("", "キャンセルされました", OKButton="終了")
+            else:
+                horiz_coords, vert_coords = derive_coords(font, icf_size, em_size)
 
-            status = "⚠️\n\n既存の BASE テーブルを\n上書きしました" if "BASE" in font else "✅\n\nBASE テーブルを\n新規追加しました"
+                status = "⚠️\n\n既存の BASE テーブルを\n上書きしました" if "BASE" in font else "✅\n\nBASE テーブルを\n新規追加しました"
 
-            add_base_table(font, horiz_coords, vert_coords)
-            font.save(font_path)
+                add_base_table(font, horiz_coords, vert_coords)
+                font.save(font_path)
 
-            result_text = (
-                f"{status}\n\n"
-                f"{os.path.basename(font_path)}"
-            )
-            Message("", result_text, OKButton="OK")
+                result_text = (
+                    f"{status}\n\n"
+                    f"{os.path.basename(font_path)}"
+                )
+                Message("", result_text, OKButton="OK")

@@ -12,7 +12,7 @@ from AppKit import NSColor, NSPoint, NSAlert
 
 ##################################################
 ## Localize - English, Japanese
-Add_Rect_Path = Glyphs.localize({ 'en': u'Add Rect Path', 'ja': u'矩形パス作成', })
+Add_Rect_Path = Glyphs.localize({ 'en': u'Add Rect Path', 'ja': u'矩形パス追加', })
 Target_Glyph = Glyphs.localize({ 'en': u'Target Glyph:', 'ja': u'対象:', })
 Selection = Glyphs.localize({ 'en': u'Selection', 'ja': u'選択グリフ', })
 All = Glyphs.localize({ 'en': u'All', 'ja': u'全グリフ', })
