@@ -1,4 +1,4 @@
-#MenuTitle: フォントファイル：AJ1のSupplementを変更
+#MenuTitle: Set AJ1 Supplement
 
 # -*- coding: utf-8 -*-
 __doc__="""

@@ -1,4 +1,4 @@
-# MenuTitle: 選択グリフ：VORGを設定
+# MenuTitle: Set VORG
 
 # -*- coding: utf-8 -*-
 __doc__="""

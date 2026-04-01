@@ -1,4 +1,4 @@
-#MenuTitle: パネル：組方向切り替え
+#MenuTitle: Switch Direction
 
 # -*- coding: utf-8 -*-
 __doc__="""

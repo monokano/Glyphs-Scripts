@@ -1,4 +1,4 @@
-#MenuTitle: パネル：矩形パスを追加
+#MenuTitle: Add Rect Path
 
 # -*- coding: utf-8 -*-
 __doc__="""

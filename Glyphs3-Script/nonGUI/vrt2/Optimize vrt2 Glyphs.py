@@ -1,4 +1,4 @@
-#MenuTitle: vrt2グリフ：全てを最適化
+#MenuTitle: Optimize vrt2 Glyphs
 
 # -*- coding: utf-8 -*-
 __doc__="""

@@ -1,4 +1,4 @@
-#MenuTitle: フォントファイル：WinAscent/WinDescentをFontBBoxから設定
+#MenuTitle: Set WinMetrics from FontBBox
 
 # -*- coding: utf-8 -*-
 __doc__="""

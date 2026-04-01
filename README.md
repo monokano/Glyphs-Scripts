@@ -7,43 +7,53 @@
 ## スクリプト一覧
 
 
-### GUI（パネル）あり
+### フォントファイル
+* フォントファイル用。要Pythonモジュール：FontTools
+* **Add BASE Table (CJK)**: CJKフォントファイルにBASEテーブルを追加
+* **Add BASE Table (nonCJK)**:  非CJKフォントファイルにBASEテーブルを追加
+* **Add Japanese Legacy Compatibility**: レガシー環境で日本語フォントとして認識されるように各種設定を追加
+* **Export Tables as TTX**: フォントファイルの各テーブルをフォントファイルと同じフォルダにTTXファイルとして出力
+* **Set AJ1 Supplement**: Adobe-Japan1フォントファイルのROSのSupplementを指定値に変更
+* **Set WinMetrics from FontBBox**: OS/2.WinAscentをhead.FontBBox.yMaxに、OS/2.WinDescentをhead.FontBBox.yMinの絶対値に設定
 
-#### Glyphsファイル
-* **矩形パスを追加：** グリフに矩形パスを追加。要Pythonモジュール：Vanilla
-* **プロポーショナルメトリクスとVORGを設定：** 選択グリフにプロポーショナルメトリクスとVORGを設定。要Pythonモジュール：Vanilla
-* **組方向切り替え：** 編集ビューの組方向を切り替え。グリフ情報表示も更新。要Pythonモジュール：Vanilla
+
+### GUIあり
+* パネルで操作。要Pythonモジュール：Vanilla
+* **Add Rect Path**: グリフに矩形パスを追加
+* **Set Proportional Metrics**: 選択グリフにプロポーショナルメトリクスとVORGを設定
+* **Switch Direction**:  編集ビューの組み方向を切り替え。グリフ情報表示も更新
 
 
 ### GUIなし
+* **Center Paths in Glyph Width**: 選択グリフの字形パスをグリフ幅の左右中央に移動。グリフ幅は変えない
+* **Set AJ1 Unicode JP04 (Glyphs 3.4)**: AJ1のCMapに基づいてUnicodeを設定
 
-#### フォントファイル
-* **AJ1のSupplementを変更**：Adobe-Japan1フォントファイルのROSのSupplementを指定値に変更。要Pythonモジュール：FontTools
-* **BASEテーブルを追加（CJK）**：CJKフォントファイルにBASEテーブルを追加。要Pythonモジュール：FontTools
-* **BASEテーブルを追加（非CJK）**：非CJKフォントファイルにBASEテーブルを追加。要Pythonモジュール：FontTools
-* **WinAscent/WinDescentをFontBBoxから設定**：OS/2.WinAscentをhead.FontBBox.yMaxに、OS/2.WinDescentをhead.FontBBox.yMinの絶対値に設定します。要Pythonモジュール：FontTools
+#### VORG
+* **Remove VORG**: VORGをデフォルト（None）に戻す
+* **Set VORG**: 縦組時に字形パスがボディの天地中央に位置するようVORGを設定。全角英数字・記号向け
 
-#### Glyphsファイル
-* **VORGを設定**：縦組時に字形がボディの天地中央に位置するようVORGを設定。全角英数字・記号向け
-* **VORGを解除**：VORGをデフォルト（None）に戻す
-* **vrt2グリフ：選択グリフから作成**：選択グリフをコンポーネントにしてvrt2グリフ（.rotat）を作成
-* **vrt2グリフ：全てを最適化**：全ての.rotatグリフを最適化
-* **字形をボディの左右中央に**：字形をボディの左右中央に移動。グリフ幅は変えない
-* **AJ1（jp04）のUnicodeを設定**：AJ1のCMapに基づいてUnicodeを設定
+#### vrt2
+* **Make vrt2 Glyphs**: 選択グリフをコンポーネントにしてvrt2グリフ（.rotat）を作成
+* **Optimize vrt2 Glyphs**: 全ての.rotatグリフを最適化
 
 
 ## 更新履歴
 
+* **2026.4.2**
+	* 全面的に整理した
+	* 「Add Japanese Legacy Compatibility」を追加
+	* 「Export Tables as TTX」を追加
 * **2026.4.1**
-	* 「WinAscent/WinDescentをFontBBoxから設定」を追加
-	* 「BASEテーブルを追加（CJK）」を修正
-	* 「矩形パスを追加」のファイル名を変更
+	* 「Set WinMetrics from FontBBox」を追加
+	* 「Add BASE Table (nonCJK)」を修正
 * **2026.3.27**
-	* 「BASEテーブルを追加（CJK）」「BASEテーブルを追加（非CJK）」を追加
-	* 「AJ1（jp04）のUnicodeを設定」をブラッシュアップ
-	* ツールチップの文言を修正
-* **2026.3.26**　「AJ1（jp04）のUnicodeを設定」（Glyphs 3.4用）を追加
-* **2026.3.25**　Glyphs 3用に一新。旧ファイルを「OLD」に移動
+	* 「Add BASE Table (CJK)」を追加
+	* 「BASEテーブルを追加（非CJK）」を追加
+	* 「Set AJ1 Unicode JP04 (Glyphs 3.4)」をブラッシュアップ
+* **2026.3.26**
+	* 「Set AJ1 Unicode JP04 (Glyphs 3.4)」を追加
+* **2026.3.25**
+	* Glyphs 3用に一新。旧ファイルを「OLD」に移動
 
 
 ## License

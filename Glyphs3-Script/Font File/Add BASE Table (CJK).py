@@ -1,9 +1,9 @@
-#MenuTitle: フォントファイル：BASEテーブルを追加（CJK用）
+#MenuTitle: Add BASE Table (CJK)
 
 # -*- coding: utf-8 -*-
 __doc__="""
 CJKフォントファイルにBASEテーブルを追加します。
-平均字面の1辺のサイズの入力が必要です。その他は自動算出。
+平均字面の1辺のサイズの入力が必要です。
 PythonモジュールのFontToolsのインストールが必要です。
 """
 

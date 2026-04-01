@@ -1,9 +1,11 @@
-#MenuTitle: AJ1（jp04）のUnicodeを設定／Glyphs 3.4
+#MenuTitle: Set AJ1 Unicode JP04 (Glyphs 3.4)
+
 # -*- coding: utf-8 -*-
 __doc__ = """
 AJ1のCMapに基づいてUnicodeを設定します。
 CMap: UniJIS2004-UTF32-H (Version: 1.022)
-Nice Name: Glyphs 3.4
+対象: Glyphs 3.4
+注意：AJ1用 nice name がGlyphs 3.4に適合している必要があります
 """
 
 # -----------------------------------------------------------------------

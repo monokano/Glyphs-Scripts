@@ -1,4 +1,4 @@
-#MenuTitle: パネル：プロポーショナルメトリクスとVORGを設定
+#MenuTitle: Set Proportional Metrics
 
 # -*- coding: utf-8 -*-
 __doc__="""

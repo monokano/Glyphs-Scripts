@@ -1,4 +1,4 @@
-#MenuTitle: vrt2グリフ：選択グリフから作成
+#MenuTitle: Make vrt2 Glyphs
 
 # -*- coding: utf-8 -*-
 __doc__="""

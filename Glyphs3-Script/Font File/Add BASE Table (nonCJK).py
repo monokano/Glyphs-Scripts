@@ -1,4 +1,4 @@
-#MenuTitle: フォントファイル：BASEテーブルを追加（非CJK用）
+#MenuTitle: Add BASE Table (nonCJK)
 
 # -*- coding: utf-8 -*-
 __doc__="""

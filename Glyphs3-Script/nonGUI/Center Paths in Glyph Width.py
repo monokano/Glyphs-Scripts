@@ -1,8 +1,8 @@
-# MenuTitle: 選択グリフ：字形をボディの左右中央に
+# MenuTitle: Center Paths in Glyph Width
 
 # -*- coding: utf-8 -*-
 __doc__="""
-選択グリフの字形をボディの左右中央に移動します。グリフ幅は変えません。
+選択グリフの字形パスをグリフ幅の左右中央に移動します。グリフ幅は変えません。
 """
 
 font = Glyphs.font

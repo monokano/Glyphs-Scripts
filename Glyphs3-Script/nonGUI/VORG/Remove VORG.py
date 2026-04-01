@@ -1,4 +1,4 @@
-# MenuTitle: 選択グリフ：VORGを解除
+# MenuTitle: Remove VORG
 
 # -*- coding: utf-8 -*-
 __doc__="""
