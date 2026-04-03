@@ -2,10 +2,10 @@
 
 # -*- coding: utf-8 -*-
 __doc__="""
-レガシー環境で日本語フォントとして認識されるよう下記を追加します。
+日本語フォント用。レガシー環境で日本語フォントとして認識されるよう下記を追加します。
 ・Mac Japanese cmap（platformID=1, platEncID=1）
 ・OS/2.ulCodePageRange1 にJIS/Japan（932）ビット（bit17）を設定
-・Mac platform nameレコード（platformID=1, platEncID=0）
+・Mac Roman nameレコード（platformID=1, platEncID=0, langID=0x0）
 PythonモジュールのFontToolsのインストールが必要です。
 """
 
@@ -96,24 +96,23 @@ def set_code_page_range(font):
 
 
 def add_mac_name_records(font):
-    """Mac platform（platformID=1, platEncID=0）の nameレコードを追加"""
+    """Mac platform nameレコードを追加"""
     name_table = font["name"]
-
-    target_ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 13, 14, 16, 17]
     added = 0
 
-    for name_id in target_ids:
+    # --- Mac Roman（platformID=1, platEncID=0, langID=0x0）---
+    # 英語テキスト用 / Windows langID=0x409 から取得
+    roman_ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 13, 14, 16, 17]
+    for name_id in roman_ids:
         if name_table.getName(name_id, 1, 0, 0) is not None:
             continue
-        record = name_table.getName(name_id, 3, 1)
+        record = name_table.getName(name_id, 3, 1, 0x409)
         if record is None:
             continue
         try:
             text = record.toUnicode()
-            # mac_roman でエンコード可能かチェックのみ行い、
-            # setName にはUnicode文字列をそのまま渡す
-            text.encode('mac_roman')
-            name_table.setName(text, name_id, 1, 0, 0)  # ← bytes ではなく str を渡す
+            text.encode('mac_roman')   # エンコード可能かチェック
+            name_table.setName(text, name_id, 1, 0, 0)
             added += 1
         except (UnicodeEncodeError, UnicodeDecodeError):
             pass
@@ -131,10 +130,8 @@ if not font_path:
 else:
     font = TTFont(font_path)
 
-    if "fvar" in font:
-        Message("", "❌\n\nバリアブルフォントには\n対応していません。\n\n" + os.path.basename(font_path), OKButton="終了")
-    elif "vmtx" not in font:
-        Message("", "❌\n\nこのフォントはvmtxがないので\n対象ではありません。\n\n" + os.path.basename(font_path), OKButton="終了")
+    if "vmtx" not in font:
+        Message("", "❌\n\nこのフォントはvmtxがないので\n日本語フォントではありません。\n\n" + os.path.basename(font_path), OKButton="終了")
     else:
         cmap_result  = add_mac_japanese_cmap(font)
         range_result = set_code_page_range(font)

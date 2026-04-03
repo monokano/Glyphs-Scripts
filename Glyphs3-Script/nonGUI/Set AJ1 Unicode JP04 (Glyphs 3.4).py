@@ -23108,9 +23108,6 @@ def main():
             if not glyph.export:
                 continue
             new_unicodes = MAPPING[glyph.name]
-            # [] はUnicode空を意味する → 空リストに正規化
-            if new_unicodes == []:
-                new_unicodes = []
             current = list(glyph.unicodes) if glyph.unicodes else []
             if current != new_unicodes:
                 glyph.unicodes = new_unicodes

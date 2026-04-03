@@ -39,6 +39,9 @@
 
 ## 更新履歴
 
+* **2026.4.3**
+	* 「Add Japanese Legacy Compatibility」でバリアブルフォントも対象に含めた
+	* 「Set AJ1 Unicode JP04 (Glyphs 3.4)」をブラッシュアップ
 * **2026.4.2**
 	* 全面的に整理した
 	* 「Add Japanese Legacy Compatibility」を追加
