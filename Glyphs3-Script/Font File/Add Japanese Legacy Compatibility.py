@@ -2,10 +2,12 @@
 
 # -*- coding: utf-8 -*-
 __doc__="""
-日本語フォント用。レガシー環境で日本語フォントとして認識されるよう下記を追加します。
+日本語フォント用。日本語フォントとして認識されるよう下記を追加します。
 ・Mac Japanese cmap（platformID=1, platEncID=1）
-・OS/2.ulCodePageRange1 にJIS/Japan（932）ビット（bit17）を設定
+・OS/2.ulCodePageRange1 にJIS/Japan（932）ビット（bit17）
 ・Mac Roman nameレコード（platformID=1, platEncID=0, langID=0x0）
+下記を削除します。
+・Windows Shift-JIS cmap（platformID=3, platEncID=2）が存在すれば削除
 PythonモジュールのFontToolsのインストールが必要です。
 """
 
@@ -63,12 +65,22 @@ def build_mac_japanese_map(font):
 
 
 def add_mac_japanese_cmap(font):
-    """Mac Japanese cmap（1,1）を追加。既存の場合はスキップ"""
+    """Mac Japanese cmap（1,1）を追加。正しいものが既存の場合はスキップ"""
     cmap_table = font["cmap"]
-    existing = {(t.platformID, t.platEncID) for t in cmap_table.tables}
 
-    if (1, 1) in existing:
+    # language=0 のものが既存かチェック
+    existing_correct = any(
+        t.platformID == 1 and t.platEncID == 1 and t.language == 0
+        for t in cmap_table.tables
+    )
+    if existing_correct:
         return "ℹ️ cmap (1,1) Mac Japanese: すでに存在します"
+
+    # language != 0 の誤ったレコードがあれば削除
+    cmap_table.tables = [
+        t for t in cmap_table.tables
+        if not (t.platformID == 1 and t.platEncID == 1)
+    ]
 
     sjis_map = build_mac_japanese_map(font)
     if not sjis_map:
@@ -77,10 +89,23 @@ def add_mac_japanese_cmap(font):
     t = _c_m_a_p.cmap_format_2(2)
     t.platformID = 1
     t.platEncID  = 1    # Macintosh Japanese
-    t.language   = 11   # Japanese
+    t.language   = 0    # Unspecific
     t.cmap       = sjis_map
     cmap_table.tables.append(t)
     return f"✅ cmap (1,1) Mac Japanese: {len(sjis_map)} エントリ追加"
+
+
+def remove_windows_sjis_cmap(font):
+    """Windows Shift-JIS cmap（platformID=3, platEncID=2）が存在すれば削除"""
+    cmap_table = font["cmap"]
+    before = len(cmap_table.tables)
+    cmap_table.tables = [
+        t for t in cmap_table.tables
+        if not (t.platformID == 3 and t.platEncID == 2)
+    ]
+    after = len(cmap_table.tables)
+    if before != after:
+        return "✅ cmap (3,2) Windows Shift-JIS: 削除しました"
 
 
 def set_code_page_range(font):
@@ -96,14 +121,13 @@ def set_code_page_range(font):
 
 
 def add_mac_name_records(font):
-    """Mac platform nameレコードを追加"""
+    """Mac Roman nameレコード（platformID=1, platEncID=0, langID=0x0）を追加"""
     name_table = font["name"]
+
+    target_ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 13, 14, 16, 17]
     added = 0
 
-    # --- Mac Roman（platformID=1, platEncID=0, langID=0x0）---
-    # 英語テキスト用 / Windows langID=0x409 から取得
-    roman_ids = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 13, 14, 16, 17]
-    for name_id in roman_ids:
+    for name_id in target_ids:
         if name_table.getName(name_id, 1, 0, 0) is not None:
             continue
         record = name_table.getName(name_id, 3, 1, 0x409)
@@ -111,7 +135,7 @@ def add_mac_name_records(font):
             continue
         try:
             text = record.toUnicode()
-            text.encode('mac_roman')   # エンコード可能かチェック
+            text.encode('mac_roman')
             name_table.setName(text, name_id, 1, 0, 0)
             added += 1
         except (UnicodeEncodeError, UnicodeDecodeError):
@@ -134,6 +158,7 @@ else:
         Message("", "❌\n\nこのフォントはvmtxがないので\n日本語フォントではありません。\n\n" + os.path.basename(font_path), OKButton="終了")
     else:
         cmap_result  = add_mac_japanese_cmap(font)
+        sjis_result  = remove_windows_sjis_cmap(font)
         range_result = set_code_page_range(font)
         name_added   = add_mac_name_records(font)
 
@@ -142,6 +167,7 @@ else:
         result_text = (
             f"{os.path.basename(font_path)}\n\n"
             f"{cmap_result}\n\n"
+            f"{sjis_result}\n\n"
             f"{range_result}\n\n"
             f"✅ Mac nameレコード: {name_added} 件追加"
         )

@@ -11,7 +11,7 @@
 * フォントファイル用。要Pythonモジュール：FontTools
 * **Add BASE Table (CJK)**: CJKフォントファイルにBASEテーブルを追加
 * **Add BASE Table (nonCJK)**:  非CJKフォントファイルにBASEテーブルを追加
-* **Add Japanese Legacy Compatibility**: レガシー環境で日本語フォントとして認識されるように各種設定を追加
+* **Add Japanese Legacy Compatibility**: 日本語フォントとして認識されるように各種設定を追加
 * **Export Tables as TTX**: フォントファイルの各テーブルをフォントファイルと同じフォルダにTTXファイルとして出力
 * **Set AJ1 Supplement**: Adobe-Japan1フォントファイルのROSのSupplementを指定値に変更
 * **Set WinMetrics from FontBBox**: OS/2.WinAscentをhead.FontBBox.yMaxに、OS/2.WinDescentをhead.FontBBox.yMinの絶対値に設定
@@ -39,8 +39,10 @@
 
 ## 更新履歴
 
+* **2026.4.10**
+	* 「Add Japanese Legacy Compatibility」を修正
 * **2026.4.3**
-	* 「Add Japanese Legacy Compatibility」でバリアブルフォントも対象に含めた
+	* 「Add Japanese Legacy Compatibility」でバリアブルフォントを対象に含めた
 	* 「Set AJ1 Unicode JP04 (Glyphs 3.4)」をブラッシュアップ
 * **2026.4.2**
 	* 全面的に整理した
