@@ -49,9 +49,13 @@ def setSupplement(font_path, target_value):
             return (font_path, "\n❌ ROS情報なし\n（非 OpenType CID？）")
         
         ros = top_dict.ROS
+        # Adobe-Japan1 以外はスキップ
+        if ros[0] != "Adobe" or ros[1] != "Japan1":
+            return (font_path, f"\n❌ Adobe-Japan1ではありません\n（{ros[0]}-{ros[1]}-{ros[2]}）")
+
         current = ros[2]
         if current == target_value:
-            return (font_path, f"\n✓ 変更不要\n（Supplement は {current} です）")
+            return (font_path, f"\nℹ️ 変更不要\n（Supplement は {current} です）")
         
         top_dict.ROS = (ros[0], ros[1], target_value)
         font.save(font_path)
@@ -70,5 +74,5 @@ else:
         Message("", "Supplementの入力がキャンセルされたか、無効な値です", OKButton="OK")
     else:
         results = [setSupplement(path, supplement) for path in font_paths]
-        result_text = "\n".join([f"{os.path.basename(p)}: {msg}" for p, msg in results])
+        result_text = "\n\n---\n\n".join([f"{os.path.basename(p)}{msg}" for p, msg in results])
         Message("", result_text, OKButton="OK")

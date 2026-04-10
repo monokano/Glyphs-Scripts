@@ -29,16 +29,16 @@ from AppKit import NSOpenPanel
 BIT_JIS = 1 << 17   # 0x00020000
 
 
-def select_font_file():
+def select_font_files():
     panel = NSOpenPanel.openPanel()
     panel.setTitle_("フォントファイルを選択")
     panel.setMessage_("日本語レガシー互換設定を追加するフォントファイルを選んでください")
     panel.setAllowedFileTypes_(["otf", "ttf"])
-    panel.setAllowsMultipleSelection_(False)
+    panel.setAllowsMultipleSelection_(True)
     panel.setCanChooseDirectories_(False)
     if panel.runModal() == 1:
-        return panel.URL().path()
-    return None
+        return [url.path() for url in panel.URLs()]
+    return []
 
 
 def build_mac_japanese_map(font):
@@ -148,15 +148,18 @@ def add_mac_name_records(font):
 # メイン
 # ============================================================
 
-font_path = select_font_file()
-if not font_path:
+font_paths = select_font_files()
+if not font_paths:
     Message("", "ファイルが選択されませんでした", OKButton="終了")
 else:
-    font = TTFont(font_path)
+    results = []
+    for font_path in font_paths:
+        font = TTFont(font_path)
 
-    if "vmtx" not in font:
-        Message("", "❌\n\nこのフォントはvmtxがないので\n日本語フォントではありません。\n\n" + os.path.basename(font_path), OKButton="終了")
-    else:
+        if "vmtx" not in font:
+            results.append(f"❌ {os.path.basename(font_path)}\nvmtxがないので日本語フォントではありません")
+            continue
+
         cmap_result  = add_mac_japanese_cmap(font)
         sjis_result  = remove_windows_sjis_cmap(font)
         range_result = set_code_page_range(font)
@@ -164,11 +167,19 @@ else:
 
         font.save(font_path)
 
-        result_text = (
-            f"{os.path.basename(font_path)}\n\n"
-            f"{cmap_result}\n\n"
-            f"{sjis_result}\n\n"
-            f"{range_result}\n\n"
+        name_result = (
             f"✅ Mac nameレコード: {name_added} 件追加"
+            if name_added > 0
+            else "ℹ️ Mac nameレコード: すでに存在します"
         )
-        Message("", result_text, OKButton="OK")
+
+        entry_lines = [os.path.basename(font_path)]
+        entry_lines.append(cmap_result)
+        if sjis_result:
+            entry_lines.append(sjis_result)
+        entry_lines.append(range_result)
+        entry_lines.append(name_result)
+
+        results.append("\n".join(entry_lines))
+
+    Message("", "\n\n---\n\n".join(results), OKButton="OK")

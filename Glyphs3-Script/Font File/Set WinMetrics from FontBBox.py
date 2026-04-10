@@ -21,31 +21,34 @@ from fontTools.ttLib import TTFont
 from AppKit import NSOpenPanel
 
 
-def select_font_file():
+def select_font_files():
     panel = NSOpenPanel.openPanel()
     panel.setTitle_("フォントファイルを選択")
     panel.setMessage_("WinAscent/WinDescentを設定するフォントファイルを選んでください")
     panel.setAllowedFileTypes_(["otf", "ttf"])
-    panel.setAllowsMultipleSelection_(False)
+    panel.setAllowsMultipleSelection_(True)
     panel.setCanChooseDirectories_(False)
     if panel.runModal() == 1:
-        return panel.URL().path()
-    return None
+        return [url.path() for url in panel.URLs()]
+    return []
 
 
 # ============================================================
 # メイン
 # ============================================================
 
-font_path = select_font_file()
-if not font_path:
+font_paths = select_font_files()
+if not font_paths:
     Message("", "ファイルが選択されませんでした", OKButton="終了")
 else:
-    font = TTFont(font_path)
+    results = []
+    for font_path in font_paths:
+        font = TTFont(font_path)
 
-    if "fvar" in font:
-        Message("", "❌\n\nバリアブルフォントには\n対応していません。\n\n" + os.path.basename(font_path), OKButton="終了")
-    else:
+        if "fvar" in font:
+            results.append(f"❌ {os.path.basename(font_path)}\nバリアブルフォントには対応していません")
+            continue
+
         y_max = font["head"].yMax
         y_min = font["head"].yMin
 
@@ -53,14 +56,15 @@ else:
         old_descent = font["OS/2"].usWinDescent
 
         font["OS/2"].usWinAscent  = y_max
-        font["OS/2"].usWinDescent = -y_min   # usWinDescent は正の値
+        font["OS/2"].usWinDescent = -y_min
 
         font.save(font_path)
 
-        result_text = (
-            f"✅\n\nWinAscent/WinDescentを更新しました。\n\n"
-            f"{os.path.basename(font_path)}\n\n"
+        entry = (
+            f"{os.path.basename(font_path)}\n"
             f"WinAscent  : {old_ascent} → {y_max}\n"
             f"WinDescent : {old_descent} → {-y_min}"
         )
-        Message("", result_text, OKButton="OK")
+        results.append(entry)
+
+    Message("", "✅ WinAscent/WinDescentを更新しました。\n\n" + "\n\n---\n\n".join(results), OKButton="OK")

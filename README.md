@@ -12,7 +12,7 @@
 * **Add BASE Table (CJK)**: CJKフォントファイルにBASEテーブルを追加
 * **Add BASE Table (nonCJK)**:  非CJKフォントファイルにBASEテーブルを追加
 * **Add Japanese Legacy Compatibility**: 日本語フォントとして認識されるように各種設定を追加
-* **Export Tables as TTX**: フォントファイルの各テーブルをフォントファイルと同じフォルダにTTXファイルとして出力
+* **Export Tables as TTX**: フォントファイルの各テーブルを同階層にTTXファイルとして出力
 * **Set AJ1 Supplement**: Adobe-Japan1フォントファイルのROSのSupplementを指定値に変更
 * **Set WinMetrics from FontBBox**: OS/2.WinAscentをhead.FontBBox.yMaxに、OS/2.WinDescentをhead.FontBBox.yMinの絶対値に設定
 
@@ -41,6 +41,11 @@
 
 * **2026.4.10**
 	* 「Add Japanese Legacy Compatibility」を修正
+	* 「Set AJ1 Supplement」をブラシュアップ
+	* 複数のフォントファイルを選択して実行できるように改善
+		* 「Add Japanese Legacy Compatibility」
+		* 「Set AJ1 Supplement」
+		* 「Set WinMetrics from FontBBox」
 * **2026.4.3**
 	* 「Add Japanese Legacy Compatibility」でバリアブルフォントを対象に含めた
 	* 「Set AJ1 Unicode JP04 (Glyphs 3.4)」をブラッシュアップ
