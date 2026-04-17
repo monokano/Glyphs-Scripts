@@ -1,21 +1,27 @@
+[更新履歴](CHANGELOG.md)
 
 # Glyphsスクリプト
 
 * Glyphs 3用のPythonスクリプト
 
 
-## スクリプト一覧
+## フォントファイル用
+* 要Pythonモジュール：FontTools
 
-
-### フォントファイル
-* フォントファイル用。要Pythonモジュール：FontTools
-* **Add BASE Table (CJK)**: CJKフォントファイルにBASEテーブルを追加
-* **Add BASE Table (nonCJK)**:  非CJKフォントファイルにBASEテーブルを追加
+### Glyphs 3の不備を修正
 * **Add Japanese Legacy Compatibility**: 日本語フォントとして認識されるように各種設定を追加
-* **Export Tables as TTX**: フォントファイルの各テーブルを同階層にTTXファイルとして出力
-* **Set AJ1 Supplement**: Adobe-Japan1フォントファイルのROSのSupplementを指定値に変更
 * **Set WinMetrics from FontBBox**: OS/2.WinAscentをhead.FontBBox.yMaxに、OS/2.WinDescentをhead.FontBBox.yMinの絶対値に設定
 
+### BASE
+* **Add BASE Table (CJK)**: CJKフォントファイルにBASEテーブルを追加
+* **Add BASE Table (nonCJK)**:  非CJKフォントファイルにBASEテーブルを追加
+
+### その他
+* **Set AJ1 Supplement**: Adobe-Japan1フォントファイルのROSのSupplementを指定値に変更
+* **Export Tables as TTX**: フォントファイルの各テーブルを同階層にTTXファイルとして出力
+
+
+## Glyphsファイル用
 
 ### GUIあり
 * パネルで操作。要Pythonモジュール：Vanilla
@@ -29,41 +35,12 @@
 * **Set AJ1 Unicode JP04 (Glyphs 3.4)**: AJ1のCMapに基づいてUnicodeを設定
 
 #### VORG
-* **Remove VORG**: VORGをデフォルト（None）に戻す
 * **Set VORG**: 縦組時に字形パスがボディの天地中央に位置するようVORGを設定。全角英数字・記号向け
+* **Remove VORG**: VORGをデフォルト（None）に戻す
 
 #### vrt2
 * **Make vrt2 Glyphs**: 選択グリフをコンポーネントにしてvrt2グリフ（.rotat）を作成
 * **Optimize vrt2 Glyphs**: 全ての.rotatグリフを最適化
-
-
-## 更新履歴
-
-* **2026.4.10**
-	* 「Add Japanese Legacy Compatibility」を修正
-	* 「Set AJ1 Supplement」をブラシュアップ
-	* 複数のフォントファイルを選択して実行できるように改善
-		* 「Add Japanese Legacy Compatibility」
-		* 「Set AJ1 Supplement」
-		* 「Set WinMetrics from FontBBox」
-* **2026.4.3**
-	* 「Add Japanese Legacy Compatibility」でバリアブルフォントを対象に含めた
-	* 「Set AJ1 Unicode JP04 (Glyphs 3.4)」をブラッシュアップ
-* **2026.4.2**
-	* 全面的に整理した
-	* 「Add Japanese Legacy Compatibility」を追加
-	* 「Export Tables as TTX」を追加
-* **2026.4.1**
-	* 「Set WinMetrics from FontBBox」を追加
-	* 「Add BASE Table (nonCJK)」を修正
-* **2026.3.27**
-	* 「Add BASE Table (CJK)」を追加
-	* 「BASEテーブルを追加（非CJK）」を追加
-	* 「Set AJ1 Unicode JP04 (Glyphs 3.4)」をブラッシュアップ
-* **2026.3.26**
-	* 「Set AJ1 Unicode JP04 (Glyphs 3.4)」を追加
-* **2026.3.25**
-	* Glyphs 3用に一新。旧ファイルを「OLD」に移動
 
 
 ## License

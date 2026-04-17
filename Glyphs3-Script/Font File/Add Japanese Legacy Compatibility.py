@@ -3,11 +3,20 @@
 # -*- coding: utf-8 -*-
 __doc__="""
 日本語フォント用。日本語フォントとして認識されるよう下記を追加します。
-・Mac Japanese cmap（platformID=1, platEncID=1）
-・OS/2.ulCodePageRange1 にJIS/Japan（932）ビット（bit17）
-・Mac Roman nameレコード（platformID=1, platEncID=0, langID=0x0）
-下記を削除します。
+
+【cmap】
+・Mac Japanese cmap（platformID=1, platEncID=1）を追加
 ・Windows Shift-JIS cmap（platformID=3, platEncID=2）が存在すれば削除
+
+【OS/2】
+・ulCodePageRange1 にJIS/Japan（932）ビット（bit17）を設定
+・usWinAscent を head.yMax に、usWinDescent を head.yMin の絶対値に設定
+
+【name】
+・Mac Roman nameレコード（platformID=1, platEncID=0, langID=0x0）を調整
+・Mac Japanese nameレコード（platformID=1, platEncID=1, langID=0xb）を調整
+・Windows日本語nameレコード（platformID=3, platEncID=1, langID=0x411）を調整
+
 PythonモジュールのFontToolsのインストールが必要です。
 """
 
@@ -144,6 +153,101 @@ def add_mac_name_records(font):
     return added
 
 
+def fix_win_japanese_name(font):
+    """
+    (3,1,0x411) の修正:
+    ・nameID=1 を nameID=16+17 から再構築（Glyphsが英語スタイル名を使う問題を修正）
+    ・nameID=4 の英語名混入を削除
+    """
+    name_table = font["name"]
+
+    # (3,1,0x411) が存在しない場合はスキップ
+    if name_table.getName(1, 3, 1, 0x411) is None:
+        return None
+
+    msgs = []
+
+    # nameID=1 を nameID=16 + nameID=17 から再構築
+    rec16 = name_table.getName(16, 3, 1, 0x411)
+    rec17 = name_table.getName(17, 3, 1, 0x411)
+    if rec16 and rec17:
+        expected = rec16.toUnicode() + " " + rec17.toUnicode()
+        rec1     = name_table.getName(1, 3, 1, 0x411)
+        current  = rec1.toUnicode() if rec1 else None
+        if current != expected:
+            name_table.setName(expected, 1, 3, 1, 0x411)
+            msgs.append(f"nameID=1: {current!r} → {expected!r}")
+
+    # nameID=4 削除
+    if name_table.getName(4, 3, 1, 0x411) is not None:
+        name_table.removeNames(nameID=4, platformID=3, platEncID=1, langID=0x411)
+        msgs.append("nameID=4 削除")
+
+    if msgs:
+        return "✅ name (3,1,0x411): " + "、".join(msgs)
+    return None
+
+
+def fix_mac_japanese_name(font):
+    """
+    (1,1,0xb) Mac Japanese の nameID=1,2,4 を (3,1,0x411) から同期。
+    存在しない場合は追加、値が異なる場合は更新する。
+    """
+    name_table = font["name"]
+
+    # (3,1,0x411) nameID=1 が存在しない場合はスキップ
+    src1 = name_table.getName(1, 3, 1, 0x411)
+    if src1 is None:
+        return None
+
+    msgs = []
+
+    def sync(name_id, value):
+        dst = name_table.getName(name_id, 1, 1, 0xb)
+        if dst is None:
+            name_table.setName(value, name_id, 1, 1, 0xb)
+            msgs.append(f"nameID={name_id} 追加")
+        elif dst.toUnicode() != value:
+            name_table.setName(value, name_id, 1, 1, 0xb)
+            msgs.append(f"nameID={name_id} 更新")
+
+    full_name = src1.toUnicode()
+
+    # nameID=1: (3,1,0x411) nameID=1（再構築済み）から同期
+    sync(1, full_name)
+
+    # nameID=2: (3,1,0x411) nameID=2 から同期
+    src2 = name_table.getName(2, 3, 1, 0x411)
+    if src2:
+        sync(2, src2.toUnicode())
+
+    # nameID=4: nameID=1 と同値（日本語フルネーム）
+    sync(4, full_name)
+
+    if msgs:
+        return "✅ name (1,1,0xb) Mac Japanese: " + "、".join(msgs)
+    return "ℹ️ name (1,1,0xb) Mac Japanese: 修正不要"
+
+
+def set_win_metrics(font):
+    """OS/2.usWinAscent/WinDescent を head.yMax/yMin から設定"""
+    if "fvar" in font:
+        return "ℹ️ WinMetrics: バリアブルフォントのためスキップ"
+
+    y_max = font["head"].yMax
+    y_min = font["head"].yMin
+    old_ascent  = font["OS/2"].usWinAscent
+    old_descent = font["OS/2"].usWinDescent
+
+    font["OS/2"].usWinAscent  = y_max
+    font["OS/2"].usWinDescent = -y_min
+
+    return (
+        f"✅ WinAscent : {old_ascent} → {y_max}\n"
+        f"   WinDescent: {old_descent} → {-y_min}"
+    )
+
+
 # ============================================================
 # メイン
 # ============================================================
@@ -160,10 +264,13 @@ else:
             results.append(f"❌ {os.path.basename(font_path)}\nvmtxがないので日本語フォントではありません")
             continue
 
-        cmap_result  = add_mac_japanese_cmap(font)
-        sjis_result  = remove_windows_sjis_cmap(font)
-        range_result = set_code_page_range(font)
-        name_added   = add_mac_name_records(font)
+        cmap_result      = add_mac_japanese_cmap(font)
+        sjis_result      = remove_windows_sjis_cmap(font)
+        range_result     = set_code_page_range(font)
+        name_added       = add_mac_name_records(font)
+        win_name_result  = fix_win_japanese_name(font)
+        mac_name_result  = fix_mac_japanese_name(font)
+        metrics_result   = set_win_metrics(font)
 
         font.save(font_path)
 
@@ -179,6 +286,11 @@ else:
             entry_lines.append(sjis_result)
         entry_lines.append(range_result)
         entry_lines.append(name_result)
+        if win_name_result:
+            entry_lines.append(win_name_result)
+        if mac_name_result:
+            entry_lines.append(mac_name_result)
+        entry_lines.append(metrics_result)
 
         results.append("\n".join(entry_lines))
 
