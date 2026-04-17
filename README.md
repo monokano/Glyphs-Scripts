@@ -10,7 +10,7 @@
 
 ### Glyphs 3の不備を修正
 * **Add Japanese Legacy Compatibility**: 日本語フォントとして認識されるように各種設定を追加
-* **Set WinMetrics from FontBBox**: OS/2.WinAscentをhead.FontBBox.yMaxに、OS/2.WinDescentをhead.FontBBox.yMinの絶対値に設定
+* **Set WinMetrics from FontBBox**: OS/2.usWinAscent/usWinDescentをhead.yMax/yMinの値に合わせて設定
 
 ### BASE
 * **Add BASE Table (CJK)**: CJKフォントファイルにBASEテーブルを追加

@@ -2,8 +2,7 @@
 
 # -*- coding: utf-8 -*-
 __doc__="""
-OS/2.WinAscentをhead.FontBBox.yMaxに、
-OS/2.WinDescentをhead.FontBBox.yMinの絶対値に設定します。
+OS/2.usWinAscent/usWinDescentをhead.yMax/yMinの値に合わせて設定します。
 PythonモジュールのFontToolsのインストールが必要です。
 """
 
