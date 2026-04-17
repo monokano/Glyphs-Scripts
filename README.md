@@ -18,7 +18,7 @@
 
 ### その他
 * **Set AJ1 Supplement**: Adobe-Japan1フォントファイルのROSのSupplementを指定値に変更
-* **Export Tables as TTX**: フォントファイルの各テーブルを同階層にTTXファイルとして出力
+* **Export Tables as TTX**: フォントファイルの各テーブルをTTXファイルとして出力
 
 
 ## Glyphsファイル用
