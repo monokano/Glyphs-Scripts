@@ -1,5 +1,8 @@
 ## 更新履歴
 
+* **2026.4.29**
+	* 「Add Japanese Legacy Compatibility」に下記を追加
+		* mataテーブルのdlngタグにjaを設定
 * **2026.4.18**
 	* 「Add Japanese Legacy Compatibility」をブラッシュアップ
 * **2026.4.10**

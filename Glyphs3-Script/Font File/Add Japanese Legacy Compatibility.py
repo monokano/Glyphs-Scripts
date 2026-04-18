@@ -5,17 +5,20 @@ __doc__="""
 日本語フォント用。日本語フォントとして認識されるよう下記を追加します。
 
 【cmap】
-・Mac Japanese cmap（platformID=1, platEncID=1）を追加
+・MacJapanese cmap（platformID=1, platEncID=1）を追加
 ・Windows Shift-JIS cmap（platformID=3, platEncID=2）が存在すれば削除
 
 【OS/2】
-・ulCodePageRange1 にJIS/Japan（932）ビット（bit17）を設定
-・usWinAscent を head.yMax に、usWinDescent を head.yMin の絶対値に設定
+・ulCodePageRange1にJIS/Japan（932）を設定
+・usWinAscent/usWinDescentをFontBBoxの値に合わせる
 
 【name】
 ・Mac Roman nameレコード（platformID=1, platEncID=0, langID=0x0）を調整
 ・Mac Japanese nameレコード（platformID=1, platEncID=1, langID=0xb）を調整
-・Windows日本語nameレコード（platformID=3, platEncID=1, langID=0x411）を調整
+・Windows Japanese nameレコード（platformID=3, platEncID=1, langID=0x411）を調整
+
+【meta】
+・dlng タグに ja を設定（なければmetaテーブルを新規作成）
 
 PythonモジュールのFontToolsのインストールが必要です。
 """
@@ -229,6 +232,29 @@ def fix_mac_japanese_name(font):
     return "ℹ️ name (1,1,0xb) Mac Japanese: 修正不要"
 
 
+def set_meta_dlng(font):
+    """meta テーブルの dlng タグに ja を設定。なければ meta テーブルを新規作成"""
+    if "meta" not in font:
+        from fontTools.ttLib.tables import _m_e_t_a
+        meta = _m_e_t_a.table__m_e_t_a()
+        meta.data = {}
+        font["meta"] = meta
+
+    meta = font["meta"]
+    current = meta.data.get("dlng", "")
+    if isinstance(current, bytes):
+        current = current.decode("utf-8")
+
+    langs = [l.strip() for l in current.split(",") if l.strip()] if current else []
+    if "ja" in langs:
+        return "ℹ️ meta dlng: ja はすでに設定済みです"
+
+    langs.append("ja")
+    new_value = ",".join(langs)
+    meta.data["dlng"] = new_value
+    return f"✅ meta dlng: {current!r} → {new_value!r}"
+
+
 def set_win_metrics(font):
     """OS/2.usWinAscent/WinDescent を head.yMax/yMin から設定"""
     if "fvar" in font:
@@ -270,6 +296,7 @@ else:
         name_added       = add_mac_name_records(font)
         win_name_result  = fix_win_japanese_name(font)
         mac_name_result  = fix_mac_japanese_name(font)
+        meta_result      = set_meta_dlng(font)
         metrics_result   = set_win_metrics(font)
 
         font.save(font_path)
@@ -290,6 +317,7 @@ else:
             entry_lines.append(win_name_result)
         if mac_name_result:
             entry_lines.append(mac_name_result)
+        entry_lines.append(meta_result)
         entry_lines.append(metrics_result)
 
         results.append("\n".join(entry_lines))
