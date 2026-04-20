@@ -1,5 +1,7 @@
 ## 更新履歴
 
+* **2026.4.20**
+	* 「Make AJ1 NiceName GSUB fea」を追加
 * **2026.4.19**
 	* 「Add Japanese Legacy Compatibility」に下記を追加
 		* mataテーブルのdlngタグにjaを設定

@@ -42,6 +42,8 @@
 * **Make vrt2 Glyphs**: 選択グリフをコンポーネントにしてvrt2グリフ（.rotat）を作成
 * **Optimize vrt2 Glyphs**: 全ての.rotatグリフを最適化
 
+#### GSUB File
+* **Make AJ1 NiceName GSUB fea**: Adobe-Japan1のGSUBをGitHubから取得し、CIDをnicenameに変換してファイル保存
 
 ## License
 
