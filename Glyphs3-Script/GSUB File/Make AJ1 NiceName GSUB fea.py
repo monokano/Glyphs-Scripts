@@ -18,6 +18,7 @@ import urllib.request
 from AppKit import (
     NSAlert, NSPopUpButton, NSMakeRect, NSSavePanel, NSWorkspace
 )
+from Foundation import NSBundle
 
 GSUB_API_URL = (
     "https://api.github.com/repos/adobe-type-tools/Adobe-Japan1/contents/GSUB"
@@ -50,6 +51,15 @@ def get_glyphs_app_path():
     """最前面のGlyphsアプリのバンドルパスを取得"""
     app = NSWorkspace.sharedWorkspace().frontmostApplication()
     return app.bundleURL().path()
+
+
+def get_glyphs_version():
+    """Glyphsのバージョンとビルド番号を "3.4.1 (3436)" 形式で取得"""
+    bundle = NSBundle.bundleWithPath_(get_glyphs_app_path())
+    info = bundle.infoDictionary()
+    version = info.get("CFBundleShortVersionString", "?")
+    build = info.get("CFBundleVersion", "?")
+    return f"{version} ({build})"
 
 
 def load_cid_name_map():
@@ -162,6 +172,10 @@ def main():
 
     # CID → グリフ名に変換
     translated, missing = translate_fea_cid_to_name(fea_source, cid_to_name)
+
+    # 変換情報をヘッダとして付加
+    header = f"# Converted with Glyphs {get_glyphs_version()}\n\n"
+    translated = header + translated
 
     # 保存
     base, ext = os.path.splitext(selected_name)
