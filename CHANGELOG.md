@@ -1,6 +1,12 @@
 ## 更新履歴
 
-* **2026.4.20**
+* **2026.4.22**
+	* Set AJ1 Unicode JP04／Glyphsのバージョンに依存しないよう改善。AJ1のCMapをGithubから取得するように改善
+	* Make AJ1 NiceName GSUB fea／ブラシュアップ
+	* Update AJ1 NiceName／新規追加
+	* Check AJ1 NiceName Diff／新規追加
+	* Deactivate Test Fonts／新規追加
+* **2026.4.21**
 	* Make AJ1 NiceName GSUB fea／変換したfeaファイルの冒頭に使用したGlyphsのバージョンを記載するようにした
 * **2026.4.20**
 	* Make AJ1 NiceName GSUB fea／新規追加

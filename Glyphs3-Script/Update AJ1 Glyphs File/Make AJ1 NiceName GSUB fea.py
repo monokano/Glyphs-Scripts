@@ -16,7 +16,7 @@ import ssl
 import json
 import urllib.request
 from AppKit import (
-    NSAlert, NSPopUpButton, NSMakeRect, NSSavePanel, NSWorkspace
+    NSAlert, NSPopUpButton, NSMakeRect, NSSavePanel
 )
 from Foundation import NSBundle
 
@@ -47,16 +47,9 @@ def list_gsub_files():
     return files
 
 
-def get_glyphs_app_path():
-    """最前面のGlyphsアプリのバンドルパスを取得"""
-    app = NSWorkspace.sharedWorkspace().frontmostApplication()
-    return app.bundleURL().path()
-
-
 def get_glyphs_version():
     """Glyphsのバージョンとビルド番号を "3.4.1 (3436)" 形式で取得"""
-    bundle = NSBundle.bundleWithPath_(get_glyphs_app_path())
-    info = bundle.infoDictionary()
+    info = NSBundle.mainBundle().infoDictionary()
     version = info.get("CFBundleShortVersionString", "?")
     build = info.get("CFBundleVersion", "?")
     return f"{version} ({build})"
@@ -65,7 +58,7 @@ def get_glyphs_version():
 def load_cid_name_map():
     """MapFileAdobe-Japan1.txtからCID→グリフ名マッピングを読み込む"""
     map_path = os.path.join(
-        get_glyphs_app_path(),
+        NSBundle.mainBundle().bundlePath(),
         "Contents/Frameworks/GlyphsCore.framework/Versions/A/Resources/"
         "MapFileAdobe-Japan1.txt"
     )

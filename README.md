@@ -21,10 +21,6 @@
 * **Export Tables as TTX**: フォントファイルの各テーブルをTTXファイルとして出力
 
 
-## GSUBファイル用
-* **Make AJ1 NiceName GSUB fea**: Adobe-Japan1のGSUBをGitHubから取得し、CIDをnicenameに変換してファイル保存
-
-
 ## Glyphsファイル用
 
 ### GUIあり
@@ -33,10 +29,8 @@
 * **Set Proportional Metrics**: 選択グリフにプロポーショナルメトリクスとVORGを設定
 * **Switch Direction**:  編集ビューの組み方向を切り替え。グリフ情報表示も更新
 
-
 ### GUIなし
 * **Center Paths in Glyph Width**: 選択グリフの字形パスをグリフ幅の左右中央に移動。グリフ幅は変えない
-* **Set AJ1 Unicode JP04 (Glyphs 3.4)**: AJ1のCMapに基づいてUnicodeを設定
 
 #### VORG
 * **Set VORG**: 縦組時に字形パスがボディの天地中央に位置するようVORGを設定。全角英数字・記号向け
@@ -46,6 +40,15 @@
 * **Make vrt2 Glyphs**: 選択グリフをコンポーネントにしてvrt2グリフ（.rotat）を作成
 * **Optimize vrt2 Glyphs**: 全ての.rotatグリフを最適化
 
+## AJ1 Glyphsファイル更新用
+* **Set AJ1 Unicode JP04**: Adobe-Japan1のCMapをGitHubから取得し、グリフにUnicodeを設定
+* **Make AJ1 NiceName GSUB fea**: Adobe-Japan1のGSUBをGitHubから取得し、CIDをnicenameに変換してfeaファイル保存
+* **Update AJ1 NiceName**: 新旧Glyphsバージョンのnicenameの差分を検出し、Glyphsファイルを更新
+* **Check AJ1 NiceName Diff**: 新旧Glyphsバージョンのnicenameの差分を確認
+
+
+## その他
+* **Deactivate Test Fonts**: テストインストールされたフォントをディアクティベート
 
 ## License
 
