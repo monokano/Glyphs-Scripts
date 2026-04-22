@@ -1,7 +1,9 @@
 ## 更新履歴
 
+* **2026.4.23**
+	* Set AJ1 glyphOrder JIS2004／新規追加
 * **2026.4.22**
-	* Set AJ1 Unicode JP04／Glyphsのバージョンに依存しないよう改善。AJ1のCMapをGithubから取得するように改善
+	* Set AJ1 Unicode JIS2004／Glyphsのバージョンに依存しないよう改善。AJ1のCMapをGithubから取得するように改善
 	* Make AJ1 NiceName GSUB fea／ブラシュアップ
 	* Update AJ1 NiceName／新規追加
 	* Check AJ1 NiceName Diff／新規追加
@@ -24,7 +26,7 @@
 		* Set WinMetrics from FontBBox
 * **2026.4.3**
 	* Add Japanese Legacy Compatibility／バリアブルフォントを対象に含めた
-	* Set AJ1 Unicode JP04 (Glyphs 3.4)／ブラッシュアップ
+	* Set AJ1 Unicode JIS2004 (Glyphs 3.4)／ブラッシュアップ
 * **2026.4.2**
 	* 全面的に整理した
 	* Add Japanese Legacy Compatibility／新規追加
@@ -35,8 +37,8 @@
 * **2026.3.27**
 	* Add BASE Table (CJK)／新規追加
 	* BASEテーブルを追加（非CJK）／新規追加
-	* Set AJ1 Unicode JP04 (Glyphs 3.4)／ブラッシュアップ
+	* Set AJ1 Unicode JIS2004 (Glyphs 3.4)／ブラッシュアップ
 * **2026.3.26**
-	* Set AJ1 Unicode JP04 (Glyphs 3.4)／新規追加
+	* Set AJ1 Unicode JIS2004 (Glyphs 3.4)／新規追加
 * **2026.3.25**
 	* Glyphs 3用に一新。旧ファイルを「OLD」に移動

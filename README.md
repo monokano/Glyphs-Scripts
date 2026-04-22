@@ -41,8 +41,9 @@
 * **Optimize vrt2 Glyphs**: 全ての.rotatグリフを最適化
 
 ## AJ1 Glyphsファイル更新用
-* **Set AJ1 Unicode JP04**: Adobe-Japan1のCMapをGitHubから取得し、グリフにUnicodeを設定
 * **Make AJ1 NiceName GSUB fea**: Adobe-Japan1のGSUBをGitHubから取得し、CIDをnicenameに変換してfeaファイル保存
+* **Set AJ1 Unicode JIS2004**: Adobe-Japan1のCMapをGitHubから取得し、グリフにUnicodeを設定
+* **Set AJ1 glyphOrder JIS2004**: Adobe-Japan1用のglyphOrderを設定
 * **Update AJ1 NiceName**: 新旧Glyphsバージョンのnicenameの差分を検出し、Glyphsファイルを更新
 * **Check AJ1 NiceName Diff**: 新旧Glyphsバージョンのnicenameの差分を確認
 

@@ -1,4 +1,4 @@
-#MenuTitle: Set AJ1 Unicode JP04
+#MenuTitle: Set AJ1 Unicode JIS2004
 
 # -*- coding: utf-8 -*-
 __doc__ = """
